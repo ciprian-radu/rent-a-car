@@ -1,0 +1,14 @@
+description = "Represents an embedded H2 database for the application. The database can be accessed with the companion initializer component."
+
+dependencies {
+    implementation project(':application:interface-adapters:gateways')
+    implementation project(':application:use-cases')
+
+    compile libs.spring_context
+    compile libs.spring_jdbc
+
+    runtime libs.h2
+
+    testCompile libs.junit_api
+    testRuntime libs.junit_engine
+}

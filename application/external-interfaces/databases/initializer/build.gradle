@@ -1,0 +1,12 @@
+description = "Initializes the Context of the application that holds references to all gateways. standalone, this is not a useful component. It is a companion for any database component."
+
+dependencies {
+    implementation project(':application:interface-adapters:gateways')
+    implementation project(':application:use-cases')
+
+    compile libs.spring_context
+    compile libs.spring_jdbc
+
+    testCompile libs.junit_api
+    testRuntime libs.junit_engine
+}

@@ -1,0 +1,124 @@
+plugins {
+    id 'com.github.ben-manes.versions' version '0.20.0'
+}
+
+allprojects {
+    apply plugin: 'jacoco'
+
+    repositories {
+        jcenter()
+    }
+
+}
+
+subprojects {
+
+    apply plugin: 'java'
+    sourceCompatibility = JavaVersion.VERSION_1_8
+
+    ext {
+        junit_version = '5.3.1'
+        mockito_version = '2.23.0'
+        spring_version = '5.1.1.RELEASE'
+        spring_boot_version = '2.0.6.RELEASE'
+        spring_cloud_version = 'Finchley.SR1'
+        h2_version = '1.4.197'
+        postgresql_version = '42.2.5'
+        thymeleaf_extras_version = '3.0.3.RELEASE'
+        slf4j_version = '1.7.25'
+        logback_version = '1.2.3'
+    }
+
+    ext.libs = [
+            junit_api       : [
+                    "org.junit.jupiter:junit-jupiter-api:${junit_version}",
+            ],
+            junit_engine    : [
+                    "org.junit.jupiter:junit-jupiter-engine:${junit_version}",
+            ],
+            mockito_core    : [
+                    "org.mockito:mockito-core:${mockito_version}",
+            ],
+            spring_jdbc     : [
+                    "org.springframework:spring-jdbc:${spring_version}",
+            ],
+            h2              : [
+                    "com.h2database:h2:${h2_version}",
+            ],
+            postgresql      : [
+                    "org.postgresql:postgresql:${postgresql_version}",
+
+            ],
+            spring_context  : [
+                    "org.springframework:spring-context:${spring_version}",
+            ],
+            thymeleaf_extras: [
+                    "org.thymeleaf.extras:thymeleaf-extras-springsecurity4:${thymeleaf_extras_version}"
+            ],
+            log             : [
+                    "org.slf4j:slf4j-api:${slf4j_version}",
+                    "ch.qos.logback:logback-core:${logback_version}",
+                    "ch.qos.logback:logback-classic:${logback_version}"
+
+            ],
+    ]
+
+    test {
+        useJUnitPlatform()
+
+        jacoco {
+            append = false
+        }
+
+        testLogging {
+            events "passed", "skipped", "failed"
+        }
+
+        reports {
+            html.enabled = true
+        }
+    }
+
+    jacocoTestReport {
+        dependsOn test
+
+        additionalSourceDirs = files(sourceSets.main.allSource.srcDirs)
+        sourceDirectories = files(sourceSets.main.allSource.srcDirs)
+        classDirectories = files(sourceSets.main.output)
+
+        reports {
+            xml.enabled = false
+            csv.enabled = false
+            html.destination file("${buildDir}/jacocoHtml")
+        }
+    }
+
+    task stage {
+        dependsOn build
+    }
+
+}
+
+// Credits: https://gist.github.com/aalmiray/e6f54aa4b3803be0bcac
+task jacocoRootReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
+    dependsOn = subprojects.test
+    additionalSourceDirs = files(subprojects.sourceSets.main.allSource.srcDirs)
+    sourceDirectories = files(subprojects.sourceSets.main.allSource.srcDirs)
+    classDirectories = files(subprojects.sourceSets.main.output)
+    executionData = files(subprojects.jacocoTestReport.executionData)
+    reports {
+        html.enabled = true
+        xml.enabled = true
+        csv.enabled = false
+        html.destination file("${buildDir}/jacocoHtml")
+    }
+    onlyIf = {
+        true
+    }
+    doFirst {
+        executionData = files(executionData.findAll {
+            it.exists()
+        })
+    }
+}
+

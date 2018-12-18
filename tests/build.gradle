@@ -1,0 +1,2 @@
+description = "Contains the testing strategy, by following the Practical Testing Pyramind. " +
+        "See https://martinfowler.com/articles/practical-test-pyramid.html"

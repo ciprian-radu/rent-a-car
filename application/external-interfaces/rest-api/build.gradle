@@ -1,0 +1,36 @@
+description = "Represents a REST API for the application, which is also an OAuth2 Resource Server."
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${spring_boot_version}")
+    }
+}
+
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+dependencies {
+    implementation project(':application:interface-adapters:http')
+    implementation project(':application:use-cases')
+    runtime project(':application:external-interfaces:databases:initializer')
+    runtime project(':application:external-interfaces:databases:postgresql')
+
+    compile('org.springframework.boot:spring-boot-starter-data-rest')
+    compile('org.springframework.cloud:spring-cloud-starter-security')
+
+    runtime('org.springframework.boot:spring-boot-starter-actuator')
+
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile libs.junit_api
+    testCompile libs.mockito_core
+    testRuntime libs.junit_engine
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${spring_cloud_version}"
+    }
+}

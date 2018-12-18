@@ -1,0 +1,13 @@
+description = "Represents a set of adapters that convert data from the format most convenient for the use cases and entities, " +
+        "to the format most convenient the Database."
+
+dependencies {
+    implementation project(':application:entities')
+    implementation project(':application:use-cases')
+
+    compile libs.spring_jdbc
+
+    testCompile libs.junit_api
+    testRuntime libs.junit_engine
+    testRuntime libs.h2
+}

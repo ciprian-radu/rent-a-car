@@ -1,0 +1,15 @@
+description = "Represents a PostgreSQL database for the application. The database can be accessed with the companion initializer component."
+
+dependencies {
+    implementation project(':application:interface-adapters:gateways')
+    implementation project(':application:use-cases')
+
+    compile libs.spring_context
+    compile libs.spring_jdbc
+    compile libs.log
+
+    runtime libs.postgresql
+
+    testCompile libs.junit_api
+    testRuntime libs.junit_engine
+}

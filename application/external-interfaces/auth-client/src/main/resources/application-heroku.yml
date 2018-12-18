@@ -1,0 +1,38 @@
+# Where is the REST API located
+rest-api-url: https://rent-a-car-rest-api.herokuapp.com
+
+# Make the application available on the port given by Heroku
+# These are default settings, but we add them for clarity.
+server:
+  port: ${PORT}
+  contextPath: /
+
+# Configure the Authorization Server and User Info Resource Server details
+security:
+  oauth2:
+    client:
+      accessTokenUri: https://rent-a-car-auth-server.herokuapp.com/oauth/token
+      userAuthorizationUri: https://rent-a-car-auth-server.herokuapp.com/oauth/authorize
+      clientId: rent-a-car-client-id
+      clientSecret: rent-a-car-client-secret
+    resource:
+      userInfoUri: https://rent-a-car-rest-api.herokuapp.com/person
+
+spring:
+  datasource:
+    url: jdbc:postgresql://ec2-54-163-245-44.compute-1.amazonaws.com/dejupbf36qghih
+    username: ixgwbwyinujzua
+    password: 299ba9bca868085fd943c1f096f3367935a830fdf0c1912a0e7ef92c1f4e2a3d
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true # See https://github.com/pgjdbc/pgjdbc/issues/1102
+  thymeleaf:
+    cache: false # Necessary for hot swapping (See https://docs.spring.io/spring-boot/docs/current/reference/html/howto-hotswapping.html)
+
+#logging:
+#    level:
+#      org.springframework.security: DEBUG

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <!-- Mobile Specific Meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="img/fav.png">
+    <!-- Author Meta -->
+    <meta name="author" content="codepixer">
+    <!-- Meta Description -->
+    <meta name="description" content="">
+    <!-- Meta Keyword -->
+    <meta name="keywords" content="">
+    <!-- meta character set -->
+    <meta charset="UTF-8">
+    <!-- Site Title -->
+    <title>Car Rentals</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
+    <!--
+    CSS
+    ============================================= -->
+    <link rel="stylesheet" href="css/linearicons.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/magnific-popup.css">
+    <link rel="stylesheet" href="css/nice-select.css">
+    <link rel="stylesheet" href="css/animate.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="css/owl.carousel.css">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+<header id="header">
+    <div class="container">
+        <div class="row align-items-center justify-content-between d-flex">
+            <div id="logo">
+                <a href="index.html"><img src="img/logo.png" alt="" title=""/></a>
+            </div>
+            <nav id="nav-menu-container">
+                <ul class="nav-menu">
+                    <li class="menu-active"><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="cars.html">Cars</a></li>
+                    <li><a href="service.html">Service</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a th:href="@{/logout}"><span th:if="${#authorization.expression('isAuthenticated()')}">Log out</span></a></li>
+                </ul>
+            </nav><!-- #nav-menu-container -->
+        </div>
+        <div sec:authorize="isAuthenticated()">
+            <div class="text-right">
+                Welcome <span sec:authentication="name"></span>
+            </div>
+        </div>
+    </div>
+</header><!-- #header -->
+
+<section class="banner-area relative" id="home">
+    <div class="overlay overlay-bg"></div>
+    <div class="container">
+        <div class="row fullscreen d-flex justify-content-center">
+            <div class="col-md-12 mt-70">
+                <div th:if="${#lists.isEmpty(vehicles)}">
+                    No cars are available now! Please try again later.
+                </div>
+                <div th:if="${not #lists.isEmpty(vehicles)}">
+                    <h4 class="text-white pb-30">The following cars are available.</h4>
+                    <table class="col-md-12">
+                        <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Brand</th>
+                            <th>Model</th>
+                            <th>Rate (€/day)</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="v : ${vehicles}">
+                            <td><span th:text="${v.type}"></span></td>
+                            <td><span th:text="${v.brand}"></span></td>
+                            <td><span th:text="${v.model}"></span></td>
+                            <td><span th:text="${v.rate}"></span></td>
+                            <td>
+                                <form th:action="@{/rent}" method="post" th:object="${rent}">
+                                    <input type="hidden" th:value="${#authentication.getPrincipal().getUsername()}" name="renterEmail">
+                                    <!--See https://stackoverflow.com/questions/25808433/hidden-field-value-blank-thymeleaf-->
+                                    <!--I don't have expressions so I don't need th:attr-->
+                                    <input type="hidden" th:value="${v.type}" name="vehicleType">
+                                    <input type="hidden" th:value="${v.brand}" name="vehicleBrand">
+                                    <input type="hidden" th:value="${v.model}" name="vehicleModel">
+                                    <input type="hidden" th:value="${rent.pickupDate}" name="pickupDate">
+                                    <input type="hidden" th:value="${rent.pickupLocationName}" name="pickupLocationName">
+                                    <input type="hidden" th:value="${rent.returnDate}" name="returnDate">
+                                    <input type="hidden" th:value="${rent.returnLocationName}" name="returnLocationName">
+                                    <button type="submit" class="btn btn-default btn-lg btn-block text-center text-uppercase">Rent
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-12 mt-70">
+                    <button type="button" onclick="location.href='/search.html';"
+                            class="form-control primary-btn btn btn-default btn-lg btn-block text-center text-uppercase">Search Cars
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End banner Area -->
+
+<script src="js/vendor/jquery-2.2.4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="js/vendor/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="js/easing.min.js"></script>
+<script src="js/hoverIntent.js"></script>
+<script src="js/superfish.min.js"></script>
+<script src="js/jquery.ajaxchimp.min.js"></script>
+<script src="js/jquery.magnific-popup.min.js"></script>
+<script src="js/owl.carousel.min.js"></script>
+<script src="js/jquery.sticky.js"></script>
+<script src="js/jquery.nice-select.min.js"></script>
+<script src="js/waypoints.min.js"></script>
+<script src="js/jquery.counterup.min.js"></script>
+<script src="js/parallax.min.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>

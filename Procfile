@@ -1,0 +1,1 @@
+web: java -Dspring.profiles.active=heroku -Dinit-db=$INIT_DB -DDB_URL=$DB_URL -DDB_USER=$DB_USER -DDB_PASSWORD=$DB_PASSWORD -Dserver.port=$PORT $JAVA_OPTS -jar $JAR_PATH

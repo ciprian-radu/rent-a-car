@@ -1,0 +1,8 @@
+# Make the OAuth2 Server available on the port given by Heroku
+
+server:
+  port: ${PORT}
+
+#logging:
+#    level:
+#      org.springframework.security: DEBUG

@@ -1,0 +1,23 @@
+# This property doesn't seem to work for writing ZonedDateTime values using ISO-8601
+# WebConfig is in place for this.
+#
+# spring.jackson.serialization.write-dates-as-timestamps=false
+
+# Make the OAuth2 Resource Server available at http://localhost:7082
+server:
+  port: 7082
+
+# RemoteTokenServices configuration
+security:
+  oauth2:
+    client:
+      clientId: rent-a-car-client-id
+      clientSecret: rent-a-car-client-secret
+    resource:
+      tokenInfoUri: http://localhost:7081/oauth/check_token
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info,health,httptrace

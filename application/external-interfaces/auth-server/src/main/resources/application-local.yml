@@ -1,0 +1,8 @@
+# Make the OAuth2 Server available at http://localhost:7081
+
+server:
+  port: 7081
+
+logging:
+    level:
+      org.springframework.security: DEBUG
