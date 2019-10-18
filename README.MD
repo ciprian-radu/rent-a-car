@@ -84,6 +84,9 @@ See [REST API README.md](application/external-interfaces/rest-api/README.md).
 
 # How to Run
 
+The project is set to use a PostgreSQL database by default.
+See [PostgreSQL README.md](application/external-interfaces/databases/postgresql/README.MD/README.md) for instructions on how to create the database.
+
 We have three Spring Boot applications that we need to start.
 
 ## Using Gradle
