@@ -12,7 +12,11 @@ import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
-import ro.ciprianradu.rentacar.auth.client.controller.dto.*;
+import ro.ciprianradu.rentacar.auth.client.controller.dto.LocationDto;
+import ro.ciprianradu.rentacar.auth.client.controller.dto.RentDto;
+import ro.ciprianradu.rentacar.auth.client.controller.dto.RenterDto;
+import ro.ciprianradu.rentacar.auth.client.controller.dto.UserRegistrationDto;
+import ro.ciprianradu.rentacar.auth.client.controller.dto.VehicleCategoryDto;
 
 /**
  * Provides access to the REST API by exposing all its capabilities.
@@ -29,26 +33,27 @@ public class RestApiService {
     @Autowired
     private OAuth2RestOperations restTemplate;
 
-    public List<VehicleCategoryDto> searchVehicles(final ZonedDateTime pickupDate, final String pickupLocation, final ZonedDateTime returnDate,
-        final String returnLocation) {
+    public List<VehicleCategoryDto> searchVehicles(final ZonedDateTime pickupDate,
+        final String pickupLocation, final ZonedDateTime returnDate, final String returnLocation) {
 
-        final UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(restApiUrl + "/vehicles")
-            .queryParam("pickupDate", pickupDate)
-            .queryParam("pickupLocation", pickupLocation)
-            .queryParam("returnDate", returnDate)
+        final UriComponentsBuilder builder = UriComponentsBuilder
+            .fromUriString(restApiUrl + "/vehicles").queryParam("pickupDate", pickupDate)
+            .queryParam("pickupLocation", pickupLocation).queryParam("returnDate", returnDate)
             .queryParam("returnLocation", returnLocation);
 
         final ResponseEntity<List<VehicleCategoryDto>> vehicles = oAuth2RestTemplate
-            .exchange(builder.buildAndExpand().toUri(), HttpMethod.GET, null, new ParameterizedTypeReference<List<VehicleCategoryDto>>() {
-            });
+            .exchange(builder.buildAndExpand().toUri(), HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<VehicleCategoryDto>>() {
+                });
 
         return vehicles.getBody();
     }
 
     public List<LocationDto> getAllLocations() {
         final ResponseEntity<List<LocationDto>> locations = oAuth2RestTemplate
-            .exchange(restApiUrl + "/locations", HttpMethod.GET, null, new ParameterizedTypeReference<List<LocationDto>>() {
-            });
+            .exchange(restApiUrl + "/locations", HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<LocationDto>>() {
+                });
 
         return locations.getBody();
     }
@@ -59,11 +64,13 @@ public class RestApiService {
         renter.setLastName(userDto.getLastName());
         renter.setEmail(userDto.getEmail());
 
-        return oAuth2RestTemplate.postForEntity(restApiUrl + "/renters", renter, Map.class, restTemplate);
+        return oAuth2RestTemplate
+            .postForEntity(restApiUrl + "/renters", renter, Map.class, restTemplate);
     }
 
     public ResponseEntity<RentDto> rent(final RentDto rentDto) {
-        return oAuth2RestTemplate.postForEntity(restApiUrl + "/reservations", rentDto, RentDto.class, restTemplate);
+        return oAuth2RestTemplate
+            .postForEntity(restApiUrl + "/reservations", rentDto, RentDto.class, restTemplate);
     }
 
 }

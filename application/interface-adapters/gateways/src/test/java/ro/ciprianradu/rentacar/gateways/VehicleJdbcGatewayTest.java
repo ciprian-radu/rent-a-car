@@ -4,72 +4,79 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.dao.DuplicateKeyException;
-import ro.ciprianradu.rentacar.entity.*;
-import ro.ciprianradu.rentacar.usecases.Context;
-import ro.ciprianradu.rentacar.usecases.gateways.*;
+import ro.ciprianradu.rentacar.entity.Location;
+import ro.ciprianradu.rentacar.entity.Vehicle;
+import ro.ciprianradu.rentacar.entity.VehicleBrand;
+import ro.ciprianradu.rentacar.entity.VehicleModel;
+import ro.ciprianradu.rentacar.entity.VehicleType;
+import ro.ciprianradu.rentacar.usecases.gateways.LocationGateway;
+import ro.ciprianradu.rentacar.usecases.gateways.VehicleBrandGateway;
+import ro.ciprianradu.rentacar.usecases.gateways.VehicleGateway;
+import ro.ciprianradu.rentacar.usecases.gateways.VehicleModelGateway;
+import ro.ciprianradu.rentacar.usecases.gateways.VehicleTypeGateway;
 
 /**
  * Unit tests for {@link VehicleGateway}
  */
 class VehicleJdbcGatewayTest {
 
-    @BeforeEach
-    void setup() {
-        final VehicleGateway vehicleGateway = new VehicleJdbcGateway(JdbcTemplateFactory.createJdbcTemplate());
-        Context.vehicleGateway = vehicleGateway;
-        final VehicleTypeGateway vehicleTypeGateway = new VehicleTypeJdbcGateway(JdbcTemplateFactory.createJdbcTemplate());
-        Context.vehicleTypeGateway = vehicleTypeGateway;
-        final VehicleBrandGateway vehicleBrandGateway = new VehicleBrandJdbcGateway(JdbcTemplateFactory.createJdbcTemplate());
-        Context.vehicleBrandGateway = vehicleBrandGateway;
-        final VehicleModelGateway vehicleModelGateway = new VehicleModelJdbcGateway(JdbcTemplateFactory.createJdbcTemplate());
-        Context.vehicleModelGateway = vehicleModelGateway;
-        final LocationGateway locationGateway = new LocationJdbcGateway(JdbcTemplateFactory.createJdbcTemplate());
-        Context.locationGateway = locationGateway;
-    }
+    private VehicleGateway vehicleGateway = new VehicleJdbcGateway(
+        JdbcTemplateFactory.createJdbcTemplate());
+
+    private VehicleTypeGateway vehicleTypeGateway = new VehicleTypeJdbcGateway(
+        JdbcTemplateFactory.createJdbcTemplate());
+
+    private VehicleBrandGateway vehicleBrandGateway = new VehicleBrandJdbcGateway(
+        JdbcTemplateFactory.createJdbcTemplate());
+
+    private VehicleModelGateway vehicleModelGateway = new VehicleModelJdbcGateway(
+        JdbcTemplateFactory.createJdbcTemplate());
+
+    private LocationGateway locationGateway = new LocationJdbcGateway(
+        JdbcTemplateFactory.createJdbcTemplate());
 
     @Test
     void test_save_vehicle_saves() {
         final Vehicle vehicle = setupVehicle();
-        Context.vehicleGateway.save(vehicle);
+        vehicleGateway.save(vehicle);
         Assertions.assertNotNull(vehicle);
     }
 
     @Test
     void test_save_duplicateId_doesNotSave() {
         final Vehicle vehicle = setupVehicle();
-        Context.vehicleGateway.save(vehicle);
-        Assertions.assertThrows(DuplicateKeyException.class, () -> Context.vehicleGateway.save(vehicle));
+        vehicleGateway.save(vehicle);
+        Assertions.assertThrows(DuplicateKeyException.class, () -> vehicleGateway.save(vehicle));
     }
 
     @Test
     void test_save_typeDoesNotExist_doesNotSave() {
         final Vehicle vehicle = setupVehicle();
-        Context.vehicleGateway.save(vehicle);
-        Assertions.assertThrows(DuplicateKeyException.class, () -> Context.vehicleGateway.save(vehicle));
+        vehicleGateway.save(vehicle);
+        Assertions.assertThrows(DuplicateKeyException.class, () -> vehicleGateway.save(vehicle));
     }
 
     @Test
     void test_findById_missingId_empty() {
-        final Optional<Vehicle> vehicleOptional = Context.vehicleGateway.findById("license plate");
+        final Optional<Vehicle> vehicleOptional = vehicleGateway.findById("license plate");
         Assertions.assertFalse(vehicleOptional.isPresent());
     }
 
     @Test
     void test_findById_id_returnsVehicle() {
         final Vehicle vehicle = setupVehicle();
-        Context.vehicleGateway.save(vehicle);
-        final Optional<Vehicle> vehicleOptional = Context.vehicleGateway.findById("license plate");
+        vehicleGateway.save(vehicle);
+        final Optional<Vehicle> vehicleOptional = vehicleGateway.findById("license plate");
         Assertions.assertTrue(vehicleOptional.isPresent());
     }
 
     @Test
     void test_findById_id_returnsVehicleWithModel() {
         final Vehicle vehicle = setupVehicle();
-        Context.vehicleGateway.save(vehicle);
-        final Optional<Vehicle> vehicleOptional = Context.vehicleGateway.findById("license plate");
+        vehicleGateway.save(vehicle);
+        final Optional<Vehicle> vehicleOptional = vehicleGateway.findById("license plate");
         final Vehicle foundVehicle = vehicleOptional.get();
         final VehicleModel model = foundVehicle.getModel();
         Assertions.assertEquals("model", model.getName());
@@ -81,51 +88,52 @@ class VehicleJdbcGatewayTest {
     @Test
     void test_search_returnsVehicles() {
         final Vehicle vehicle1 = setupVehicle("number 1", "type", "brand", "model", BigDecimal.ONE);
-        Context.vehicleGateway.save(vehicle1);
+        vehicleGateway.save(vehicle1);
         final Vehicle vehicle2 = setupVehicle("number 2", "type", "brand", "model", BigDecimal.TEN);
-        Context.vehicleGateway.save(vehicle2);
-        final List<Vehicle> vehicles = Context.vehicleGateway
-            .search(vehicle1.getType().getType(), vehicle1.getBrand().getName(), vehicle1.getModel().getName(), BigDecimal.valueOf(5));
+        vehicleGateway.save(vehicle2);
+        final List<Vehicle> vehicles = vehicleGateway
+            .search(vehicle1.getType().getType(), vehicle1.getBrand().getName(),
+                vehicle1.getModel().getName(), BigDecimal.valueOf(5));
         Assertions.assertEquals(1, vehicles.size());
     }
 
     @Test
     void test_search_noCriteria_returnsAllVehicles() {
         final Vehicle vehicle1 = setupVehicle("number 1", "type", "brand", "model", BigDecimal.ONE);
-        Context.vehicleGateway.save(vehicle1);
+        vehicleGateway.save(vehicle1);
         final Vehicle vehicle2 = setupVehicle("number 2", "type", "brand", "model", BigDecimal.TEN);
-        Context.vehicleGateway.save(vehicle2);
-        final List<Vehicle> vehicles = Context.vehicleGateway.search(null, null, null, null);
+        vehicleGateway.save(vehicle2);
+        final List<Vehicle> vehicles = vehicleGateway.search(null, null, null, null);
         Assertions.assertEquals(2, vehicles.size());
     }
 
     @Test
     void test_search_emptyType_returnsAllVehicles() {
         final Vehicle vehicle1 = setupVehicle("number 1", "type", "brand", "model", BigDecimal.ONE);
-        Context.vehicleGateway.save(vehicle1);
+        vehicleGateway.save(vehicle1);
         final Vehicle vehicle2 = setupVehicle("number 2", "type", "brand", "model", BigDecimal.TEN);
-        Context.vehicleGateway.save(vehicle2);
-        final List<Vehicle> vehicles = Context.vehicleGateway.search("", null, null, null);
+        vehicleGateway.save(vehicle2);
+        final List<Vehicle> vehicles = vehicleGateway.search("", null, null, null);
         Assertions.assertEquals(2, vehicles.size());
     }
 
     @Test
     void test_search_emptyBrand_returnsAllVehicles() {
         final Vehicle vehicle1 = setupVehicle("number 1", "type", "brand", "model", BigDecimal.ONE);
-        Context.vehicleGateway.save(vehicle1);
+        vehicleGateway.save(vehicle1);
         final Vehicle vehicle2 = setupVehicle("number 2", "type", "brand", "model", BigDecimal.TEN);
-        Context.vehicleGateway.save(vehicle2);
-        final List<Vehicle> vehicles = Context.vehicleGateway.search(null, "", null, null);
+        vehicleGateway.save(vehicle2);
+        final List<Vehicle> vehicles = vehicleGateway.search(null, "", null, null);
         Assertions.assertEquals(2, vehicles.size());
     }
 
     @Test
     void test_search_emptyModel_returnsAllVehicles() {
         final Vehicle vehicle1 = setupVehicle("number 1", "type", "brand", "model", BigDecimal.ONE);
-        Context.vehicleGateway.save(vehicle1);
+        vehicleGateway.save(vehicle1);
         final Vehicle vehicle2 = setupVehicle("number 2", "type", "brand", "model", BigDecimal.TEN);
-        Context.vehicleGateway.save(vehicle2);
-        final List<Vehicle> vehicles = Context.vehicleGateway.search(null, null, "", null);
+        vehicleGateway.save(vehicle2);
+        final List<Vehicle> vehicles = vehicleGateway.search(null, null, "", null);
         Assertions.assertEquals(2, vehicles.size());
     }
 
@@ -133,11 +141,13 @@ class VehicleJdbcGatewayTest {
         return setupVehicle("license plate", "type", "brand", "model", BigDecimal.TEN, "SBZ");
     }
 
-    private Vehicle setupVehicle(final String id, final String type, final String brand, final String model, final BigDecimal rate) {
+    private Vehicle setupVehicle(final String id, final String type, final String brand,
+        final String model, final BigDecimal rate) {
         return setupVehicle(id, type, brand, model, rate, "SBZ");
     }
 
-    private Vehicle setupVehicle(final String id, final String type, final String brand, final String model, final BigDecimal rate, final String location) {
+    private Vehicle setupVehicle(final String id, final String type, final String brand,
+        final String model, final BigDecimal rate, final String location) {
         final Vehicle vehicle = new Vehicle(id);
         final VehicleType vehicleType = createVehicleType(type);
         vehicle.setType(vehicleType);
@@ -153,19 +163,19 @@ class VehicleJdbcGatewayTest {
         return vehicle;
     }
 
-    private void saveVehicleDependencies(final VehicleType vehicleType, final VehicleBrand vehicleBrand, final VehicleModel vehicleModel,
-        final Location location) {
-        if (!Context.vehicleTypeGateway.findByType(vehicleType.getType()).isPresent()) {
-            Context.vehicleTypeGateway.save(vehicleType);
+    private void saveVehicleDependencies(final VehicleType vehicleType,
+        final VehicleBrand vehicleBrand, final VehicleModel vehicleModel, final Location location) {
+        if (!vehicleTypeGateway.findByType(vehicleType.getType()).isPresent()) {
+            vehicleTypeGateway.save(vehicleType);
         }
-        if (!Context.vehicleBrandGateway.findByBrand(vehicleBrand.getName()).isPresent()) {
-            Context.vehicleBrandGateway.save(vehicleBrand);
+        if (!vehicleBrandGateway.findByBrand(vehicleBrand.getName()).isPresent()) {
+            vehicleBrandGateway.save(vehicleBrand);
         }
-        if (!Context.vehicleModelGateway.findByModel(vehicleModel.getName()).isPresent()) {
-            Context.vehicleModelGateway.save(vehicleModel);
+        if (!vehicleModelGateway.findByModel(vehicleModel.getName()).isPresent()) {
+            vehicleModelGateway.save(vehicleModel);
         }
-        if (!Context.locationGateway.findByName(location.getName()).isPresent()) {
-            Context.locationGateway.save(location);
+        if (!locationGateway.findByName(location.getName()).isPresent()) {
+            locationGateway.save(location);
         }
     }
 

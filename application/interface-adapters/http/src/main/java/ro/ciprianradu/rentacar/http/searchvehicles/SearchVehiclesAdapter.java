@@ -27,12 +27,12 @@ public class SearchVehiclesAdapter {
         this.inputPort = inputPort;
     }
 
-    private static boolean isValidInput(final ZonedDateTime pickupDate, final String pickupLocation, final ZonedDateTime returnDate,
-        final String returnLocation) {
+    private static boolean isValidInput(final ZonedDateTime pickupDate, final String pickupLocation,
+        final ZonedDateTime returnDate, final String returnLocation) {
         boolean isValid = true;
 
-        if (pickupDate == null || pickupLocation == null || pickupLocation.isEmpty() || returnDate == null || returnLocation == null || returnLocation
-            .isEmpty()) {
+        if (pickupDate == null || pickupLocation == null || pickupLocation.isEmpty()
+            || returnDate == null || returnLocation == null || returnLocation.isEmpty()) {
             isValid = false;
         }
 
@@ -40,7 +40,8 @@ public class SearchVehiclesAdapter {
     }
 
     /**
-     * Search all vehicle types (type, brand, model) that are available for renting within the specified time frame and from the given (pickup) location.
+     * Search all vehicle types (type, brand, model) that are available for renting within the
+     * specified time frame and from the given (pickup) location.
      *
      * @param pickupDate the pickup date (cannot be <code>null</code>)
      * @param pickupLocation the pickup location (cannot be <code>null</code> nor empty)
@@ -48,15 +49,15 @@ public class SearchVehiclesAdapter {
      * @param returnLocation the return location (cannot be <code>null</code> nor empty)
      * @return the result of the search
      */
-    public SearchVehiclesHttpResponse searchVehicles(final ZonedDateTime pickupDate, final String pickupLocation, final ZonedDateTime returnDate,
-        final String returnLocation) {
-        HttpResponse httpResponse;
-
+    public SearchVehiclesHttpResponse searchVehicles(final ZonedDateTime pickupDate,
+        final String pickupLocation, final ZonedDateTime returnDate, final String returnLocation) {
         if (isValidInput(pickupDate, pickupLocation, returnDate, returnLocation)) {
-            final SearchVehiclesInputData searchVehiclesInputData = new SearchVehiclesInputData(pickupDate, pickupLocation, returnDate, returnLocation);
+            final SearchVehiclesInputData searchVehiclesInputData = new SearchVehiclesInputData(
+                pickupDate, pickupLocation, returnDate, returnLocation);
             inputPort.searchVehicles(searchVehiclesInputData, outputPort);
         } else {
-            outputPort.setHttpResponse(new HttpResponse(HttpStatus.BAD_REQUEST, "Invalid input data!"));
+            outputPort
+                .setHttpResponse(new HttpResponse(HttpStatus.BAD_REQUEST, "Invalid input data!"));
         }
 
         return outputPort;

@@ -12,8 +12,8 @@ import ro.ciprianradu.rentacar.usecases.registerrenter.RegisterRenterInputPort;
  */
 public class RegisterRenterAdapter {
 
-    private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
-        Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+    private static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern
+        .compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
     private RegisterRenterInputPort inputPort;
 
@@ -51,7 +51,8 @@ public class RegisterRenterAdapter {
         if (renter == null) {
             isValid = false;
         } else {
-            isValid = renter.getFirstName() != null && renter.getLastName() != null && isValidEmail(renter.getEmail());
+            isValid = renter.getFirstName() != null && renter.getLastName() != null && isValidEmail(
+                renter.getEmail());
         }
 
         return isValid;
@@ -62,7 +63,8 @@ public class RegisterRenterAdapter {
     }
 
     private static RegisterRenterInputData buildInputData(final Renter renter) {
-        final RegisterRenterInputData inputData = new RegisterRenterInputData(renter.getFirstName(), renter.getLastName(), renter.getEmail());
+        final RegisterRenterInputData inputData = new RegisterRenterInputData(renter.getFirstName(),
+            renter.getLastName(), renter.getEmail());
         inputData.setTelephoneNumber(renter.getTelephoneNumber());
 
         return inputData;

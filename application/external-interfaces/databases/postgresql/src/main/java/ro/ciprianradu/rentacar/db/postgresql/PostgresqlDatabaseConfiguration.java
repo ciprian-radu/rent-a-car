@@ -13,12 +13,14 @@ import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 
 /**
- * Configures the local PostgreSQL database. When the database is not yet created, set as environment variable <code>init-db</code> parameter to <code>true</code>.
+ * Configures the local PostgreSQL database. When the database is not yet created, set as
+ * environment variable <code>init-db</code> parameter to <code>true</code>.
  */
 @Configuration
 public class PostgresqlDatabaseConfiguration {
 
-    private static final Logger log = LoggerFactory.getLogger(PostgresqlDatabaseConfiguration.class);
+    private static final Logger log = LoggerFactory
+        .getLogger(PostgresqlDatabaseConfiguration.class);
 
     @Bean
     public static DataSource dataSource() {

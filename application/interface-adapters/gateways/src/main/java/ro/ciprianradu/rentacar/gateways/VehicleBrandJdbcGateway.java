@@ -32,14 +32,15 @@ public class VehicleBrandJdbcGateway implements VehicleBrandGateway {
 
     @Override
     public VehicleBrand save(final VehicleBrand vehicleBrand) {
-        jdbcTemplate.update(
-            "INSERT INTO RENT_A_CAR.VEHICLE_BRAND (NAME) VALUES (?)", vehicleBrand.getName());
+        jdbcTemplate.update("INSERT INTO RENT_A_CAR.VEHICLE_BRAND (NAME) VALUES (?)",
+            vehicleBrand.getName());
         return vehicleBrand;
     }
 
     @Override
     public Optional<VehicleBrand> findByBrand(final String brand) {
-        final List<VehicleBrand> vehicleBrands = jdbcTemplate.query("SELECT * FROM RENT_A_CAR.VEHICLE_BRAND WHERE NAME = ?", mapper, new Object[]{brand});
+        final List<VehicleBrand> vehicleBrands = jdbcTemplate
+            .query("SELECT * FROM RENT_A_CAR.VEHICLE_BRAND WHERE NAME = ?", mapper, brand);
         return Optional.ofNullable(vehicleBrands.isEmpty() ? null : vehicleBrands.get(0));
     }
 

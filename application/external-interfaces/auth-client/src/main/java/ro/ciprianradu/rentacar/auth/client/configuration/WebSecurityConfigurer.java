@@ -17,32 +17,19 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
-@EnableOAuth2Client // See https://stackoverflow.com/questions/42938782/spring-enableresourceserver-vs-enableoauth2sso
+@EnableOAuth2Client
+// See https://stackoverflow.com/questions/42938782/spring-enableresourceserver-vs-enableoauth2sso
 public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-            .csrf().disable()
-            .authorizeRequests()
-            .antMatchers(
-                "/", "/index.html", "/about.html", "/cars.html", "/service.html", "/contact.html",
-                "/registration.html", "/registration",
-                "/css/**",
-                "/fonts/**",
-                "/img/**",
-                "/js/**",
-                "/scss/**").permitAll()
-            .anyRequest().authenticated()
-            .and()
-            .formLogin()
-            .loginPage("/login.html")
-            .permitAll()
-            .and()
-            .logout()
+        http.csrf().disable().authorizeRequests()
+            .antMatchers("/", "/index.html", "/about.html", "/cars.html", "/service.html",
+                "/contact.html", "/registration.html", "/registration", "/css/**", "/fonts/**",
+                "/img/**", "/js/**", "/scss/**").permitAll().anyRequest().authenticated().and()
+            .formLogin().loginPage("/login.html").permitAll().and().logout()
             .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-            .logoutSuccessUrl("/login.html?logout")
-            .permitAll();
+            .logoutSuccessUrl("/login.html?logout").permitAll();
     }
 
     @Bean
@@ -56,15 +43,18 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     }
 
     @Autowired
-    protected void configureGlobal(AuthenticationManagerBuilder auth, DataSource dataSource) throws Exception {
+    protected void configureGlobal(AuthenticationManagerBuilder auth, DataSource dataSource)
+        throws Exception {
         //set user detail service manually
         final JdbcUserDetailsManager jdbcUserDetailsManager = userDetailsManager(dataSource);
         auth.userDetailsService(jdbcUserDetailsManager);
-        JdbcUserDetailsManagerConfigurer<AuthenticationManagerBuilder> configurer =
-            new JdbcUserDetailsManagerConfigurer<>(jdbcUserDetailsManager);
+        JdbcUserDetailsManagerConfigurer<AuthenticationManagerBuilder> configurer = new JdbcUserDetailsManagerConfigurer<>(
+            jdbcUserDetailsManager);
         configurer.dataSource(dataSource);
-        configurer.usersByUsernameQuery("select username, password, enabled from users where username=?")
-            .authoritiesByUsernameQuery("select username, authority from authorities where username=?");
+        configurer
+            .usersByUsernameQuery("select username, password, enabled from users where username=?")
+            .authoritiesByUsernameQuery(
+                "select username, authority from authorities where username=?");
         //apply the configurer
         auth.apply(configurer);
     }

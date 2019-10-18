@@ -1,0 +1,22 @@
+// make module JUnit visible for tests
+--add-modules
+  org.junit.jupiter.api
+
+// allow the module to read the JUnit API
+--add-reads
+  ro.ciprianradu.rentacar.usecases=org.junit.jupiter.api
+
+--add-opens
+  ro.ciprianradu.rentacar.usecases/ro.ciprianradu.rentacar.usecases=org.junit.platform.commons
+--add-opens
+  ro.ciprianradu.rentacar.usecases/ro.ciprianradu.rentacar.usecases.registerlocation=org.junit.platform.commons
+--add-opens
+  ro.ciprianradu.rentacar.usecases/ro.ciprianradu.rentacar.usecases.registerrenter=org.junit.platform.commons
+--add-opens
+  ro.ciprianradu.rentacar.usecases/ro.ciprianradu.rentacar.usecases.registervehicle=org.junit.platform.commons
+--add-opens
+  ro.ciprianradu.rentacar.usecases/ro.ciprianradu.rentacar.usecases.rentvehicle=org.junit.platform.commons
+--add-opens
+  ro.ciprianradu.rentacar.usecases/ro.ciprianradu.rentacar.usecases.retrievelocations=org.junit.platform.commons
+--add-opens
+  ro.ciprianradu.rentacar.usecases/ro.ciprianradu.rentacar.usecases.searchvehicles=org.junit.platform.commons

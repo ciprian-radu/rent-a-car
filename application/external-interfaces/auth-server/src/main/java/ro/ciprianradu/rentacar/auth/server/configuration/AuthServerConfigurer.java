@@ -28,20 +28,17 @@ public class AuthServerConfigurer extends AuthorizationServerConfigurerAdapter {
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients
-            .inMemory()
-            .withClient("rent-a-car-client-id")
+        clients.inMemory().withClient("rent-a-car-client-id")
             .secret(passwordEncoder().encode("rent-a-car-client-secret"))
-            .authorizedGrantTypes("authorization_code", "client_credentials", "password", "implicit")
-            .scopes("read", "write");
+            .authorizedGrantTypes("authorization_code", "client_credentials", "password",
+                "implicit").scopes("read", "write");
     }
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-        security
-            .checkTokenAccess("isAuthenticated()") // it is denyAll() (disabled) by default
+        security.checkTokenAccess("isAuthenticated()") // it is denyAll() (disabled) by default
             .tokenKeyAccess("denyAll()") // endpoint /oauth/token_key is only for JWT Token Store
-            ;//.allowFormAuthenticationForClients();
+        ;
     }
 
 }

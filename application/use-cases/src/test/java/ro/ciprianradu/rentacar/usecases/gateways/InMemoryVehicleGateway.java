@@ -11,7 +11,8 @@ import ro.ciprianradu.rentacar.entity.Vehicle;
 public class InMemoryVehicleGateway extends EntityGateway<Vehicle> implements VehicleGateway {
 
     @Override
-    public List<Vehicle> search(final String type, final String brand, final String model, final BigDecimal maximumRate) {
+    public List<Vehicle> search(final String type, final String brand, final String model,
+        final BigDecimal maximumRate) {
         final List<Vehicle> vehicles = new ArrayList<>();
 
         final Iterable<Vehicle> allVehicles = findAll();

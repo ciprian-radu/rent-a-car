@@ -26,12 +26,13 @@ class RegisterVehicleController {
     }
 
     @PostMapping(value = ENDPOINT)
-    public ResponseEntity<?> registerVehicle(@RequestBody Vehicle vehicle) {
+    public ResponseEntity registerVehicle(@RequestBody Vehicle vehicle) {
         ResponseEntity responseEntity;
         final HttpResponse httpResponse = adapter.registerVehicle(vehicle);
         switch (httpResponse.getStatus()) {
             case CREATED:
-                responseEntity = ResponseEntity.created(URI.create(ENDPOINT + "/" + vehicle.getId())).body(vehicle);
+                responseEntity = ResponseEntity
+                    .created(URI.create(ENDPOINT + "/" + vehicle.getId())).body(vehicle);
                 break;
             case CONFLICT:
                 responseEntity = ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -40,7 +41,8 @@ class RegisterVehicleController {
                 responseEntity = ResponseEntity.badRequest().body(httpResponse);
                 break;
             default:
-                responseEntity = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(httpResponse);
+                responseEntity = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(httpResponse);
         }
 
         return responseEntity;

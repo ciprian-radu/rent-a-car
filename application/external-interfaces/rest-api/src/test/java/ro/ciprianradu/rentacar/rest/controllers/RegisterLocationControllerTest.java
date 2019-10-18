@@ -20,7 +20,8 @@ class RegisterLocationControllerTest {
 
     @Test
     void test_registerLocation_noLocation_doesNotRegister() {
-        final RegisterLocationController controller = new RegisterLocationController(new MockRegisterLocationInputPort());
+        final RegisterLocationController controller = new RegisterLocationController(
+            new MockRegisterLocationInputPort());
         final Location location = new Location();
         location.setName("SBZ");
         location.setAddress("Sibiu Airport");
@@ -30,7 +31,8 @@ class RegisterLocationControllerTest {
 
     @Test
     void test_registerLocation_noLocationName_doesNotRegister() {
-        final RegisterLocationController controller = new RegisterLocationController(new MockRegisterLocationInputPort());
+        final RegisterLocationController controller = new RegisterLocationController(
+            new MockRegisterLocationInputPort());
         final Location location = new Location();
         location.setAddress("Sibiu Airport");
         final ResponseEntity<?> responseEntity = controller.registerLocation(location);
@@ -39,17 +41,21 @@ class RegisterLocationControllerTest {
 
     @Test
     void test_registerLocation_validLocation_registers() {
-        final RegisterLocationController controller = new RegisterLocationController(new MockRegisterLocationInputPort());
+        final RegisterLocationController controller = new RegisterLocationController(
+            new MockRegisterLocationInputPort());
         final Location location = new Location();
         location.setName("SBZ");
         location.setAddress("Sibiu Airport");
         final ResponseEntity<?> responseEntity = controller.registerLocation(location);
-        Assertions.assertEquals(ResponseEntity.created(URI.create(RegisterLocationController.ENDPOINT + "/" + location.getName())).body(location), responseEntity);
+        Assertions.assertEquals(ResponseEntity
+            .created(URI.create(RegisterLocationController.ENDPOINT + "/" + location.getName()))
+            .body(location), responseEntity);
     }
 
     @Test
     void test_registerLocation_duplicateRenter_doesNotRegister() {
-        final RegisterLocationController controller = new RegisterLocationController(new MockRegisterLocationInputPort());
+        final RegisterLocationController controller = new RegisterLocationController(
+            new MockRegisterLocationInputPort());
         final Location location = new Location();
         location.setName("SBZ");
         location.setAddress("Sibiu Airport");
@@ -63,7 +69,8 @@ class RegisterLocationControllerTest {
         private List<String> registeredLocations = new ArrayList<>();
 
         @Override
-        public void registerLocation(final RegisterLocationInputData inputData, final RegisterLocationOutputPort outputPort) {
+        public void registerLocation(final RegisterLocationInputData inputData,
+            final RegisterLocationOutputPort outputPort) {
             boolean registered;
             if (registeredLocations.contains(inputData.getName())) {
                 registered = false;

@@ -37,11 +37,8 @@ public class RentStatusDto {
 
     @Override
     public String toString() {
-        return "RentStatusDto{" +
-            "status=" + status +
-            ", rentId=" + rentId +
-            ", rentDto=" + rentDto +
-            '}';
+        return "RentStatusDto{" + "status=" + status + ", rentId=" + rentId + ", rentDto=" + rentDto
+            + '}';
     }
 
 }

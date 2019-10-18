@@ -26,20 +26,23 @@ class RegisterLocationAdapterTest {
 
     @Test
     public void test_RegisterLocationAdapter_instantiates() {
-        final RegisterLocationAdapter registerLocationAdapter = new RegisterLocationAdapter(new MockRegisterLocationInputPort());
+        final RegisterLocationAdapter registerLocationAdapter = new RegisterLocationAdapter(
+            new MockRegisterLocationInputPort());
         Assertions.assertNotNull(registerLocationAdapter);
     }
 
     @Test
     public void test_registerLocation_nullLocation_returnsBadRequest() {
-        final RegisterLocationAdapter registerLocationAdapter = new RegisterLocationAdapter(new MockRegisterLocationInputPort());
+        final RegisterLocationAdapter registerLocationAdapter = new RegisterLocationAdapter(
+            new MockRegisterLocationInputPort());
         final HttpResponse httpResponse = registerLocationAdapter.registerLocation(null);
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, httpResponse.getStatus());
     }
 
     @Test
     public void test_registerLocation_nullLocationName_returnsBadRequest() {
-        final RegisterLocationAdapter registerLocationAdapter = new RegisterLocationAdapter(new MockRegisterLocationInputPort());
+        final RegisterLocationAdapter registerLocationAdapter = new RegisterLocationAdapter(
+            new MockRegisterLocationInputPort());
         final Location location = new Location();
         final HttpResponse httpResponse = registerLocationAdapter.registerLocation(location);
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, httpResponse.getStatus());
@@ -47,7 +50,8 @@ class RegisterLocationAdapterTest {
 
     @Test
     public void test_registerLocation_locationName_returnsCreated() {
-        final RegisterLocationAdapter registerLocationAdapter = new RegisterLocationAdapter(new MockRegisterLocationInputPort());
+        final RegisterLocationAdapter registerLocationAdapter = new RegisterLocationAdapter(
+            new MockRegisterLocationInputPort());
         final Location location = new Location();
         location.setName("name");
         final HttpResponse httpResponse = registerLocationAdapter.registerLocation(location);
@@ -56,7 +60,8 @@ class RegisterLocationAdapterTest {
 
     @Test
     public void test_registerLocation_sameLocationName_returnsCreated() {
-        final RegisterLocationAdapter registerLocationAdapter = new RegisterLocationAdapter(new MockRegisterLocationInputPort());
+        final RegisterLocationAdapter registerLocationAdapter = new RegisterLocationAdapter(
+            new MockRegisterLocationInputPort());
         final Location location = new Location();
         location.setName("name");
         HttpResponse httpResponse = registerLocationAdapter.registerLocation(location);
@@ -70,7 +75,8 @@ class RegisterLocationAdapterTest {
         private List<String> registeredLoations = new ArrayList<>();
 
         @Override
-        public void registerLocation(final RegisterLocationInputData inputData, final RegisterLocationOutputPort outputPort) {
+        public void registerLocation(final RegisterLocationInputData inputData,
+            final RegisterLocationOutputPort outputPort) {
             boolean registered;
             if (registeredLoations.contains(inputData.getName())) {
                 registered = false;

@@ -28,14 +28,16 @@ public class RegisterVehicleAdapter {
     }
 
     private static RegisterVehicleInputData buildInputData(final Vehicle vehicle) {
-        return new RegisterVehicleInputData(vehicle.getId(), vehicle.getType(), vehicle.getBrand(), vehicle.getModel(), vehicle.getRate(),
-            vehicle.getLocation());
+        return new RegisterVehicleInputData(vehicle.getId(), vehicle.getType(), vehicle.getBrand(),
+            vehicle.getModel(), vehicle.getRate(), vehicle.getLocation());
     }
 
     /**
-     * Registers a given vehicle. It must have an ID with no white spaces in it. (The ID is exposed in URLs.)
+     * Registers a given vehicle. It must have an ID with no white spaces in it. (The ID is exposed
+     * in URLs.)
      *
-     * @param vehicle the vehicle to register (cannot be <code>null</code> and must have valid data)
+     * @param vehicle the vehicle to register (cannot be <code>null</code> and must have valid
+     * data)
      * @return the response of this operation
      */
     public HttpResponse registerVehicle(final Vehicle vehicle) {
@@ -58,8 +60,10 @@ public class RegisterVehicleAdapter {
         if (vehicle == null) {
             isValid = false;
         } else {
-            isValid = isValidId(vehicle.getId()) && vehicle.getType() != null && vehicle.getBrand() != null && vehicle.getModel() != null && vehicle.getRate()
-                != null && vehicle.getRate().signum() > 0 && isValidLocation(vehicle.getLocation());
+            isValid = isValidId(vehicle.getId()) && vehicle.getType() != null
+                && vehicle.getBrand() != null && vehicle.getModel() != null
+                && vehicle.getRate() != null && vehicle.getRate().signum() > 0 && isValidLocation(
+                vehicle.getLocation());
         }
 
         return isValid;

@@ -4,9 +4,8 @@ dependencies {
     implementation project(':application:interface-adapters:gateways')
     implementation project(':application:use-cases')
 
-    compile libs.spring_context
-    compile libs.spring_jdbc
+    implementation libs.spring_context
+    implementation libs.spring_jdbc
 
-    testCompile libs.junit_api
-    testRuntime libs.junit_engine
+    testImplementation libs.junit
 }

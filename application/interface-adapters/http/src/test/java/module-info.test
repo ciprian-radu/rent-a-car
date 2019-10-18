@@ -1,0 +1,32 @@
+// make module JUnit visible for tests
+--add-modules
+  org.junit.jupiter.api
+
+// make module Mockito visible for tests
+--add-modules
+  org.mockito
+
+// allow the module to read the JUnit API
+--add-reads
+  ro.ciprianradu.rentacar.http=org.junit.jupiter.api
+
+// allow the module to read Mockito
+--add-reads
+  ro.ciprianradu.rentacar.http=org.mockito
+
+--add-opens
+  ro.ciprianradu.rentacar.http/ro.ciprianradu.rentacar.http=org.junit.platform.commons
+--add-opens
+  ro.ciprianradu.rentacar.http/ro.ciprianradu.rentacar.http.registerlocation=org.junit.platform.commons
+--add-opens
+  ro.ciprianradu.rentacar.http/ro.ciprianradu.rentacar.http.registerrenter=org.junit.platform.commons
+--add-opens
+  ro.ciprianradu.rentacar.http/ro.ciprianradu.rentacar.http.registervehicle=org.junit.platform.commons
+--add-opens
+  ro.ciprianradu.rentacar.http/ro.ciprianradu.rentacar.http.rentvehicle=org.junit.platform.commons
+--add-opens
+  ro.ciprianradu.rentacar.http/ro.ciprianradu.rentacar.http.retrievelocations=org.junit.platform.commons
+--add-opens
+  ro.ciprianradu.rentacar.http/ro.ciprianradu.rentacar.http.searchvehicles=org.junit.platform.commons
+--add-opens
+  ro.ciprianradu.rentacar.http/ro.ciprianradu.rentacar.http.searchvehicles=org.mockito

@@ -54,24 +54,28 @@ class RentVehicleControllerTest {
 
     @Test
     void test_rentVehicle_null_doesNotRent() {
-        final RentVehicleController controller = new RentVehicleController(new MockRentVehicleInputPort());
+        final RentVehicleController controller = new RentVehicleController(
+            new MockRentVehicleInputPort());
         final ResponseEntity<?> responseEntity = controller.rentVehicle(null);
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
     }
 
     @Test
     void test_rentVehicle_reservation_rents() {
-        final RentVehicleController controller = new RentVehicleController(new MockRentVehicleInputPort());
+        final RentVehicleController controller = new RentVehicleController(
+            new MockRentVehicleInputPort());
         final Reservation reservation = createReservation();
 
         final ResponseEntity<?> responseEntity = controller.rentVehicle(reservation);
-        Assertions.assertEquals(ResponseEntity.created(URI.create(RentVehicleController.ENDPOINT + "/" + reservation.getId())).body(reservation),
-            responseEntity);
+        Assertions.assertEquals(ResponseEntity
+            .created(URI.create(RentVehicleController.ENDPOINT + "/" + reservation.getId()))
+            .body(reservation), responseEntity);
     }
 
     @Test
     void test_rentVehicle_reservation_returnsRentId() {
-        final RentVehicleController controller = new RentVehicleController(new MockRentVehicleInputPort());
+        final RentVehicleController controller = new RentVehicleController(
+            new MockRentVehicleInputPort());
         final Reservation reservation = createReservation();
         controller.rentVehicle(reservation);
         Assertions.assertFalse(reservation.getId().isEmpty());
@@ -97,7 +101,8 @@ class RentVehicleControllerTest {
     private static class MockRentVehicleInputPort implements RentVehicleInputPort {
 
         @Override
-        public void rentVehicle(final RentVehicleInputData inputData, final RentVehicleOutputPort outputPort) {
+        public void rentVehicle(final RentVehicleInputData inputData,
+            final RentVehicleOutputPort outputPort) {
             outputPort.present(new RentVehicleOutputData(true, UUID.randomUUID().toString()));
         }
 

@@ -13,9 +13,11 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
 dependencies {
-    compile('org.springframework.cloud:spring-cloud-starter-oauth2')
+    implementation('org.springframework.cloud:spring-cloud-starter-oauth2')
 
-    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+
+    runtime('org.springframework.boot:spring-boot-starter-tomcat')
 }
 
 dependencyManagement {

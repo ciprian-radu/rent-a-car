@@ -5,9 +5,8 @@ dependencies {
     implementation project(':application:entities')
     implementation project(':application:use-cases')
 
-    compile libs.spring_jdbc
+    implementation libs.spring_jdbc
 
-    testCompile libs.junit_api
-    testRuntime libs.junit_engine
+    testImplementation libs.junit
     testRuntime libs.h2
 }

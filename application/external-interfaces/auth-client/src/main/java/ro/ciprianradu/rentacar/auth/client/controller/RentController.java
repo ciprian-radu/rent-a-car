@@ -32,7 +32,8 @@ public class RentController {
     }
 
     @PostMapping
-    public String rentVehicle(@ModelAttribute("rent") @Valid RentDto rentDto, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+    public String rentVehicle(@ModelAttribute("rent") @Valid RentDto rentDto, BindingResult result,
+        Model model, RedirectAttributes redirectAttributes) {
         log.debug("Trying to rent using {}", rentDto);
 
         if (result.hasErrors()) {
@@ -46,20 +47,22 @@ public class RentController {
         switch (responseEntity.getStatusCode()) {
             case CREATED:
                 rentStatusDto.setRentDto(rentDto);
-//                rentStatusDto.setRentId();
                 rentStatusDto.setStatus(true);
                 rentStatusDto.setRentDto(responseEntity.getBody());
                 break;
             case CONFLICT:
-                log.error("The REST API returned an HTTP Conflict. These data was used: {}", rentDto);
+                log.error("The REST API returned an HTTP Conflict. These data was used: {}",
+                    rentDto);
                 rentStatusDto.setStatus(false);
                 break;
             case BAD_REQUEST:
-                log.error("The REST API returned an HTTP Bad Request. These data was used: {}", rentDto);
+                log.error("The REST API returned an HTTP Bad Request. These data was used: {}",
+                    rentDto);
                 rentStatusDto.setStatus(false);
                 break;
             default:
-                log.error("The REST API returned an HTTP {}. These data was used: {}", responseEntity.getStatusCode(), rentDto);
+                log.error("The REST API returned an HTTP {}. These data was used: {}",
+                    responseEntity.getStatusCode(), rentDto);
                 rentStatusDto.setStatus(false);
         }
         redirectAttributes.addFlashAttribute("rentStatus", rentStatusDto);

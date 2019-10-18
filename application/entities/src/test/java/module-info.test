@@ -1,0 +1,10 @@
+// make module JUnit visible for tests
+--add-modules
+  org.junit.jupiter.api
+
+// allow the module to read the JUnit API
+--add-reads
+  ro.ciprianradu.rentacar.entities=org.junit.jupiter.api
+
+--add-opens
+  ro.ciprianradu.rentacar.entities/ro.ciprianradu.rentacar.entity=org.junit.platform.commons

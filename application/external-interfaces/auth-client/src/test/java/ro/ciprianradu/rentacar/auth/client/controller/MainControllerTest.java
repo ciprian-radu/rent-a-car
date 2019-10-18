@@ -36,7 +36,8 @@ class MainControllerTest {
 
     @BeforeEach
     public void setup() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(mainController).setViewResolvers(new StandaloneMvcTestViewResolver()).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(mainController)
+            .setViewResolvers(new StandaloneMvcTestViewResolver()).build();
     }
 
     @Test
@@ -47,8 +48,8 @@ class MainControllerTest {
 
     @Test
     public void test_root_returnsIndexHtml() throws Exception {
-        Assertions.assertEquals("index.html", mockMvc.perform(get("/")).andDo(print())
-            .andReturn().getModelAndView().getViewName());
+        Assertions.assertEquals("index.html",
+            mockMvc.perform(get("/")).andDo(print()).andReturn().getModelAndView().getViewName());
     }
 
     @Test
@@ -83,13 +84,14 @@ class MainControllerTest {
 
     @Test
     public void test_search_returnsSearchHtml() throws Exception {
-        mockMvc.perform(get("/search.html").sessionAttr("search", new SearchDto())).andExpect(view().name("search.html"));
+        mockMvc.perform(get("/search.html").sessionAttr("search", new SearchDto()))
+            .andExpect(view().name("search.html"));
     }
 
     @Test
     public void test_searchResults_returnsSearchResultsHtml() throws Exception {
-        mockMvc.perform(
-            get("/search-results.html").sessionAttr("rent", new RentDto()).sessionAttr("vehicles", Collections.singletonList(VehicleCategoryDto.class)))
+        mockMvc.perform(get("/search-results.html").sessionAttr("rent", new RentDto())
+            .sessionAttr("vehicles", Collections.singletonList(VehicleCategoryDto.class)))
             .andExpect(view().name("search-results.html"));
     }
 

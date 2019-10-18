@@ -25,14 +25,16 @@ class RentVehicleAdapterTest {
 
     @Test
     public void test_RentVehicleAdapter_instantiates() {
-        final RentVehicleAdapter rentVehicleAdapter = new RentVehicleAdapter(new MockRentVehicleInputPort());
+        final RentVehicleAdapter rentVehicleAdapter = new RentVehicleAdapter(
+            new MockRentVehicleInputPort());
         Assertions.assertNotNull(rentVehicleAdapter);
     }
 
     @Test
     public void test_rentVehicle_returnsCreated() {
         final Reservation reservation = createValidReservation();
-        final RentVehicleAdapter rentVehicleAdapter = new RentVehicleAdapter(new MockRentVehicleInputPort());
+        final RentVehicleAdapter rentVehicleAdapter = new RentVehicleAdapter(
+            new MockRentVehicleInputPort());
         final HttpResponse httpResponse = rentVehicleAdapter.rentVehicle(reservation);
         Assertions.assertEquals(HttpStatus.CREATED, httpResponse.getStatus());
     }
@@ -54,7 +56,8 @@ class RentVehicleAdapterTest {
     @Test
     public void test_rentVehicle_sameRent_returnsConflict() {
         final Reservation reservation = createValidReservation();
-        final RentVehicleAdapter rentVehicleAdapter = new RentVehicleAdapter(new MockRentVehicleInputPort());
+        final RentVehicleAdapter rentVehicleAdapter = new RentVehicleAdapter(
+            new MockRentVehicleInputPort());
         rentVehicleAdapter.rentVehicle(reservation);
         final HttpResponse httpResponse = rentVehicleAdapter.rentVehicle(reservation);
         Assertions.assertEquals(HttpStatus.CONFLICT, httpResponse.getStatus());
@@ -62,14 +65,16 @@ class RentVehicleAdapterTest {
 
     @Test
     public void test_rentVehicle_nullReservation_returnsBadRequest() {
-        final RentVehicleAdapter rentVehicleAdapter = new RentVehicleAdapter(new MockRentVehicleInputPort());
+        final RentVehicleAdapter rentVehicleAdapter = new RentVehicleAdapter(
+            new MockRentVehicleInputPort());
         final HttpResponse httpResponse = rentVehicleAdapter.rentVehicle(null);
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, httpResponse.getStatus());
     }
 
     @Test
     public void test_getRentId_returnsRentId() {
-        final RentVehicleAdapter rentVehicleAdapter = new RentVehicleAdapter(new MockRentVehicleInputPort());
+        final RentVehicleAdapter rentVehicleAdapter = new RentVehicleAdapter(
+            new MockRentVehicleInputPort());
         rentVehicleAdapter.rentVehicle(createValidReservation());
         Assertions.assertEquals("rent-id", rentVehicleAdapter.getRentId());
     }
@@ -79,8 +84,10 @@ class RentVehicleAdapterTest {
         private boolean alreadyRented = false;
 
         @Override
-        public void rentVehicle(final RentVehicleInputData inputData, final RentVehicleOutputPort outputPort) {
-            final RentVehicleOutputData rentVehicleOutputData = new RentVehicleOutputData(!alreadyRented, "rent-id");
+        public void rentVehicle(final RentVehicleInputData inputData,
+            final RentVehicleOutputPort outputPort) {
+            final RentVehicleOutputData rentVehicleOutputData = new RentVehicleOutputData(
+                !alreadyRented, "rent-id");
             alreadyRented = true;
             outputPort.present(rentVehicleOutputData);
         }

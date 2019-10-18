@@ -4,7 +4,6 @@ description = "Represents a set of adapters that convert data from the format mo
 dependencies {
     implementation project(':application:use-cases')
 
-    testCompile libs.junit_api
-    testCompile libs.mockito_core
-    testRuntime libs.junit_engine
+    testImplementation libs.junit
+    testImplementation libs.mockito_core
 }

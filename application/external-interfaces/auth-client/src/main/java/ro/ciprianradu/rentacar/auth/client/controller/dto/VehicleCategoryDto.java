@@ -42,7 +42,6 @@ public class VehicleCategoryDto {
     }
 
     /**
-     *
      * @return how much it costs (in EURO) to reserve this vehicle for one day
      **/
     public BigDecimal getRate() {
@@ -50,7 +49,6 @@ public class VehicleCategoryDto {
     }
 
     /**
-     *
      * @param rate how much it costs (in EURO) to reserve this vehicle for one day
      */
     public void setRate(BigDecimal rate) {
@@ -67,12 +65,8 @@ public class VehicleCategoryDto {
 
     @Override
     public String toString() {
-        return "VehicleCategoryDto{" +
-            "type='" + type + '\'' +
-            ", brand='" + brand + '\'' +
-            ", model='" + model + '\'' +
-            ", rate=" + rate +
-            ", location='" + location + '\'' +
-            '}';
+        return "VehicleCategoryDto{" + "type='" + type + '\'' + ", brand='" + brand + '\''
+            + ", model='" + model + '\'' + ", rate=" + rate + ", location='" + location + '\''
+            + '}';
     }
 }

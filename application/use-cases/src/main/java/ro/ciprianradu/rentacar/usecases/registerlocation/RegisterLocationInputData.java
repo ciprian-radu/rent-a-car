@@ -15,7 +15,6 @@ public class RegisterLocationInputData {
      * Constructor
      *
      * @param name the location name (must not be empty nor <code>null</code>)
-     * @param address
      */
     public RegisterLocationInputData(final String name, final String address) {
         if (Objects.isNull(name) || name.isEmpty()) {

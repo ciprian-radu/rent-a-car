@@ -5,24 +5,43 @@ import java.time.temporal.ChronoUnit;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ro.ciprianradu.rentacar.entity.*;
-import ro.ciprianradu.rentacar.usecases.Context;
+import ro.ciprianradu.rentacar.entity.Location;
+import ro.ciprianradu.rentacar.entity.Renter;
+import ro.ciprianradu.rentacar.entity.Vehicle;
+import ro.ciprianradu.rentacar.entity.VehicleBrand;
+import ro.ciprianradu.rentacar.entity.VehicleModel;
+import ro.ciprianradu.rentacar.entity.VehicleType;
+import ro.ciprianradu.rentacar.usecases.gateways.GatewaysAccessor;
 import ro.ciprianradu.rentacar.usecases.gateways.InMemoryLocationGateway;
 import ro.ciprianradu.rentacar.usecases.gateways.InMemoryRenterGateway;
 import ro.ciprianradu.rentacar.usecases.gateways.InMemoryReservationGateway;
 import ro.ciprianradu.rentacar.usecases.gateways.InMemoryVehicleGateway;
+import ro.ciprianradu.rentacar.usecases.gateways.LocationGateway;
+import ro.ciprianradu.rentacar.usecases.gateways.RenterGateway;
+import ro.ciprianradu.rentacar.usecases.gateways.ReservationGateway;
+import ro.ciprianradu.rentacar.usecases.gateways.VehicleGateway;
 
 /**
  * Unit tests for {@link RentVehicleUseCase}
  */
 class RentVehicleUseCaseTest {
 
+    private GatewaysAccessor gatewaysAccessor = new GatewaysAccessor();
+
+    private RenterGateway renterGateway = new InMemoryRenterGateway();
+
+    private VehicleGateway vehicleGateway = new InMemoryVehicleGateway();
+
+    private LocationGateway locationGateway = new InMemoryLocationGateway();
+
+    private ReservationGateway reservationGateway = new InMemoryReservationGateway();
+
     @BeforeEach
     void setupContext() {
-        Context.renterGateway = new InMemoryRenterGateway();
-        Context.vehicleGateway = new InMemoryVehicleGateway();
-        Context.locationGateway = new InMemoryLocationGateway();
-        Context.reservationGateway = new InMemoryReservationGateway();
+        gatewaysAccessor.setRenterGateway(renterGateway);
+        gatewaysAccessor.setVehicleGateway(vehicleGateway);
+        gatewaysAccessor.setLocationGateway(locationGateway);
+        gatewaysAccessor.setReservationGateway(reservationGateway);
     }
 
     @Test
@@ -31,21 +50,21 @@ class RentVehicleUseCaseTest {
         renter.setEmail("john.doe@email.com");
         renter.setFirstName("John");
         renter.setLastName("Doe");
-        Context.renterGateway.save(renter);
+        renterGateway.save(renter);
         final Vehicle vehicle = createVehicle();
-        Context.vehicleGateway.save(vehicle);
+        vehicleGateway.save(vehicle);
         Location location = new Location();
         location.setName("Sibiu");
         location.setAddress("Sibiu Airport");
-        Context.locationGateway.save(location);
+        locationGateway.save(location);
 
-        RentVehicleInputData rentVehicleInputData = new RentVehicleInputData(renter.getEmail(), vehicle.getType().getType(), vehicle.getBrand().getName(),
-            vehicle.getModel().getName(), ZonedDateTime.now(), "Sibiu", ZonedDateTime.now().plus(1, ChronoUnit.DAYS), "Sibiu");
+        RentVehicleInputData rentVehicleInputData = new RentVehicleInputData(renter.getEmail(),
+            vehicle.getType().getType(), vehicle.getBrand().getName(), vehicle.getModel().getName(),
+            ZonedDateTime.now(), "Sibiu", ZonedDateTime.now().plus(1, ChronoUnit.DAYS), "Sibiu");
 
-        RentVehicleUseCase rentVehicleUseCase = new RentVehicleUseCase();
-        rentVehicleUseCase.rentVehicle(rentVehicleInputData, rentVehicleOutputData ->
-            Assertions.assertTrue(rentVehicleOutputData.isVehicleRented())
-        );
+        RentVehicleUseCase rentVehicleUseCase = new RentVehicleUseCase(gatewaysAccessor);
+        rentVehicleUseCase.rentVehicle(rentVehicleInputData, rentVehicleOutputData -> Assertions
+            .assertTrue(rentVehicleOutputData.isVehicleRented()));
     }
 
     private Vehicle createVehicle() {
@@ -68,25 +87,23 @@ class RentVehicleUseCaseTest {
         renter.setEmail("john.doe@email.com");
         renter.setFirstName("John");
         renter.setLastName("Doe");
-        Context.renterGateway.save(renter);
+        renterGateway.save(renter);
         final Vehicle vehicle = createVehicle();
-        Context.vehicleGateway.save(vehicle);
+        vehicleGateway.save(vehicle);
         Location location = new Location();
         location.setName("Sibiu");
         location.setAddress("Sibiu Airport");
-        Context.locationGateway.save(location);
+        locationGateway.save(location);
 
-        RentVehicleInputData rentVehicleInputData = new RentVehicleInputData(renter.getEmail(), vehicle.getType().getType(), vehicle.getBrand().getName(),
-            vehicle.getModel().getName(), ZonedDateTime.now(), "Sibiu",
-            ZonedDateTime.now().plusDays(1), "Sibiu");
+        RentVehicleInputData rentVehicleInputData = new RentVehicleInputData(renter.getEmail(),
+            vehicle.getType().getType(), vehicle.getBrand().getName(), vehicle.getModel().getName(),
+            ZonedDateTime.now(), "Sibiu", ZonedDateTime.now().plusDays(1), "Sibiu");
 
-        RentVehicleUseCase rentVehicleUseCase = new RentVehicleUseCase();
-        rentVehicleUseCase.rentVehicle(rentVehicleInputData, rentVehicleOutputData ->
-            Assertions.assertTrue(rentVehicleOutputData.isVehicleRented())
-        );
-        rentVehicleUseCase.rentVehicle(rentVehicleInputData, rentVehicleOutputData ->
-            Assertions.assertFalse(rentVehicleOutputData.isVehicleRented())
-        );
+        RentVehicleUseCase rentVehicleUseCase = new RentVehicleUseCase(gatewaysAccessor);
+        rentVehicleUseCase.rentVehicle(rentVehicleInputData, rentVehicleOutputData -> Assertions
+            .assertTrue(rentVehicleOutputData.isVehicleRented()));
+        rentVehicleUseCase.rentVehicle(rentVehicleInputData, rentVehicleOutputData -> Assertions
+            .assertFalse(rentVehicleOutputData.isVehicleRented()));
     }
 
     @Test
@@ -95,32 +112,30 @@ class RentVehicleUseCaseTest {
         renter.setEmail("john.doe@email.com");
         renter.setFirstName("John");
         renter.setLastName("Doe");
-        Context.renterGateway.save(renter);
+        renterGateway.save(renter);
         final Vehicle vehicle = createVehicle();
-        Context.vehicleGateway.save(vehicle);
+        vehicleGateway.save(vehicle);
         Location location = new Location();
         location.setName("Sibiu");
         location.setAddress("Sibiu Airport");
-        Context.locationGateway.save(location);
+        locationGateway.save(location);
 
         ZonedDateTime now = ZonedDateTime.now();
-        RentVehicleInputData rentVehicleInputData1 = new RentVehicleInputData(renter.getEmail(), vehicle.getType().getType(), vehicle.getBrand().getName(),
-            vehicle.getModel().getName(), now, "Sibiu", now.plus(1,
-            ChronoUnit.DAYS), "Sibiu");
+        RentVehicleInputData rentVehicleInputData1 = new RentVehicleInputData(renter.getEmail(),
+            vehicle.getType().getType(), vehicle.getBrand().getName(), vehicle.getModel().getName(),
+            now, "Sibiu", now.plus(1, ChronoUnit.DAYS), "Sibiu");
 
-        RentVehicleUseCase rentVehicleUseCase1 = new RentVehicleUseCase();
-        rentVehicleUseCase1.rentVehicle(rentVehicleInputData1, rentVehicleOutputData ->
-            Assertions.assertTrue(rentVehicleOutputData.isVehicleRented())
-        );
+        RentVehicleUseCase rentVehicleUseCase1 = new RentVehicleUseCase(gatewaysAccessor);
+        rentVehicleUseCase1.rentVehicle(rentVehicleInputData1, rentVehicleOutputData -> Assertions
+            .assertTrue(rentVehicleOutputData.isVehicleRented()));
 
-        RentVehicleInputData rentVehicleInputData2 = new RentVehicleInputData(renter.getEmail(), vehicle.getType().getType(), vehicle.getBrand().getName(),
-            vehicle.getModel().getName(), now, "Sibiu", now.plus(1,
-            ChronoUnit.DAYS), "Sibiu");
+        RentVehicleInputData rentVehicleInputData2 = new RentVehicleInputData(renter.getEmail(),
+            vehicle.getType().getType(), vehicle.getBrand().getName(), vehicle.getModel().getName(),
+            now, "Sibiu", now.plus(1, ChronoUnit.DAYS), "Sibiu");
 
-        RentVehicleUseCase rentVehicleUseCase2 = new RentVehicleUseCase();
-        rentVehicleUseCase2.rentVehicle(rentVehicleInputData2, rentVehicleOutputData ->
-            Assertions.assertFalse(rentVehicleOutputData.isVehicleRented())
-        );
+        RentVehicleUseCase rentVehicleUseCase2 = new RentVehicleUseCase(gatewaysAccessor);
+        rentVehicleUseCase2.rentVehicle(rentVehicleInputData2, rentVehicleOutputData -> Assertions
+            .assertFalse(rentVehicleOutputData.isVehicleRented()));
     }
 
     @Test
@@ -129,33 +144,31 @@ class RentVehicleUseCaseTest {
         renter.setEmail("john.doe@email.com");
         renter.setFirstName("John");
         renter.setLastName("Doe");
-        Context.renterGateway.save(renter);
+        renterGateway.save(renter);
         final Vehicle vehicle = createVehicle();
-        Context.vehicleGateway.save(vehicle);
+        vehicleGateway.save(vehicle);
         Location location = new Location();
         location.setName("Sibiu");
         location.setAddress("Sibiu Airport");
-        Context.locationGateway.save(location);
+        locationGateway.save(location);
 
         ZonedDateTime now = ZonedDateTime.now();
-        RentVehicleInputData rentVehicleInputData1 = new RentVehicleInputData(renter.getEmail(), vehicle.getType().getType(), vehicle.getBrand().getName(),
-            vehicle.getModel().getName(), now, "Sibiu", now.plus(1,
-            ChronoUnit.DAYS), "Sibiu");
+        RentVehicleInputData rentVehicleInputData1 = new RentVehicleInputData(renter.getEmail(),
+            vehicle.getType().getType(), vehicle.getBrand().getName(), vehicle.getModel().getName(),
+            now, "Sibiu", now.plus(1, ChronoUnit.DAYS), "Sibiu");
 
-        RentVehicleUseCase rentVehicleUseCase1 = new RentVehicleUseCase();
-        rentVehicleUseCase1.rentVehicle(rentVehicleInputData1, rentVehicleOutputData ->
-            Assertions.assertTrue(rentVehicleOutputData.isVehicleRented())
-        );
+        RentVehicleUseCase rentVehicleUseCase1 = new RentVehicleUseCase(gatewaysAccessor);
+        rentVehicleUseCase1.rentVehicle(rentVehicleInputData1, rentVehicleOutputData -> Assertions
+            .assertTrue(rentVehicleOutputData.isVehicleRented()));
 
-        RentVehicleInputData rentVehicleInputData2 = new RentVehicleInputData(renter.getEmail(), vehicle.getType().getType(), vehicle.getBrand().getName(),
-            vehicle.getModel().getName(), now.minus(1, ChronoUnit.HOURS), "Sibiu",
-            now.minus(1, ChronoUnit.HOURS).plus(1,
-                ChronoUnit.DAYS), "Sibiu");
+        RentVehicleInputData rentVehicleInputData2 = new RentVehicleInputData(renter.getEmail(),
+            vehicle.getType().getType(), vehicle.getBrand().getName(), vehicle.getModel().getName(),
+            now.minus(1, ChronoUnit.HOURS), "Sibiu",
+            now.minus(1, ChronoUnit.HOURS).plus(1, ChronoUnit.DAYS), "Sibiu");
 
-        RentVehicleUseCase rentVehicleUseCase2 = new RentVehicleUseCase();
-        rentVehicleUseCase2.rentVehicle(rentVehicleInputData2, rentVehicleOutputData ->
-            Assertions.assertFalse(rentVehicleOutputData.isVehicleRented())
-        );
+        RentVehicleUseCase rentVehicleUseCase2 = new RentVehicleUseCase(gatewaysAccessor);
+        rentVehicleUseCase2.rentVehicle(rentVehicleInputData2, rentVehicleOutputData -> Assertions
+            .assertFalse(rentVehicleOutputData.isVehicleRented()));
     }
 
     @Test
@@ -164,33 +177,31 @@ class RentVehicleUseCaseTest {
         renter.setEmail("john.doe@email.com");
         renter.setFirstName("John");
         renter.setLastName("Doe");
-        Context.renterGateway.save(renter);
+        renterGateway.save(renter);
         final Vehicle vehicle = createVehicle();
-        Context.vehicleGateway.save(vehicle);
+        vehicleGateway.save(vehicle);
         Location location = new Location();
         location.setName("Sibiu");
         location.setAddress("Sibiu Airport");
-        Context.locationGateway.save(location);
+        locationGateway.save(location);
 
         ZonedDateTime now = ZonedDateTime.now();
-        RentVehicleInputData rentVehicleInputData1 = new RentVehicleInputData(renter.getEmail(), vehicle.getType().getType(), vehicle.getBrand().getName(),
-            vehicle.getModel().getName(), now, "Sibiu", now.plus(1,
-            ChronoUnit.DAYS), "Sibiu");
+        RentVehicleInputData rentVehicleInputData1 = new RentVehicleInputData(renter.getEmail(),
+            vehicle.getType().getType(), vehicle.getBrand().getName(), vehicle.getModel().getName(),
+            now, "Sibiu", now.plus(1, ChronoUnit.DAYS), "Sibiu");
 
-        RentVehicleUseCase rentVehicleUseCase1 = new RentVehicleUseCase();
-        rentVehicleUseCase1.rentVehicle(rentVehicleInputData1, rentVehicleOutputData ->
-            Assertions.assertTrue(rentVehicleOutputData.isVehicleRented())
-        );
+        RentVehicleUseCase rentVehicleUseCase1 = new RentVehicleUseCase(gatewaysAccessor);
+        rentVehicleUseCase1.rentVehicle(rentVehicleInputData1, rentVehicleOutputData -> Assertions
+            .assertTrue(rentVehicleOutputData.isVehicleRented()));
 
-        RentVehicleInputData rentVehicleInputData2 = new RentVehicleInputData(renter.getEmail(), vehicle.getType().getType(), vehicle.getBrand().getName(),
-            vehicle.getModel().getName(), now.plus(1, ChronoUnit.HOURS), "Sibiu",
-            now.plus(1, ChronoUnit.HOURS).plus(1,
-                ChronoUnit.DAYS), "Sibiu");
+        RentVehicleInputData rentVehicleInputData2 = new RentVehicleInputData(renter.getEmail(),
+            vehicle.getType().getType(), vehicle.getBrand().getName(), vehicle.getModel().getName(),
+            now.plus(1, ChronoUnit.HOURS), "Sibiu",
+            now.plus(1, ChronoUnit.HOURS).plus(1, ChronoUnit.DAYS), "Sibiu");
 
-        RentVehicleUseCase rentVehicleUseCase2 = new RentVehicleUseCase();
-        rentVehicleUseCase2.rentVehicle(rentVehicleInputData2, rentVehicleOutputData ->
-            Assertions.assertFalse(rentVehicleOutputData.isVehicleRented())
-        );
+        RentVehicleUseCase rentVehicleUseCase2 = new RentVehicleUseCase(gatewaysAccessor);
+        rentVehicleUseCase2.rentVehicle(rentVehicleInputData2, rentVehicleOutputData -> Assertions
+            .assertFalse(rentVehicleOutputData.isVehicleRented()));
     }
 
 }

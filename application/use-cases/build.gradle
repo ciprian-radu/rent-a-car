@@ -5,6 +5,5 @@ description = "Contains application specific business rules. " +
 dependencies {
     implementation project(':application:entities')
 
-    testCompile libs.junit_api
-    testRuntime libs.junit_engine
+    testImplementation libs.junit
 }

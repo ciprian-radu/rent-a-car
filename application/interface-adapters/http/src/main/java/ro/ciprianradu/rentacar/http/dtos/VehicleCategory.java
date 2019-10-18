@@ -3,8 +3,8 @@ package ro.ciprianradu.rentacar.http.dtos;
 import java.math.BigDecimal;
 
 /**
- * Represents a certain category of vehicle, which can be rented from the associated (pickup) location. It can be returned to any location. It is like a {@link
- * Vehicle} but without any ID.
+ * Represents a certain category of vehicle, which can be rented from the associated (pickup)
+ * location. It can be returned to any location. It is like a {@link Vehicle} but without any ID.
  */
 public class VehicleCategory {
 

@@ -26,12 +26,13 @@ class RegisterLocationController {
     }
 
     @PostMapping(value = ENDPOINT)
-    public ResponseEntity<?> registerLocation(@RequestBody Location location) {
+    public ResponseEntity registerLocation(@RequestBody Location location) {
         ResponseEntity responseEntity;
         final HttpResponse httpResponse = adapter.registerLocation(location);
         switch (httpResponse.getStatus()) {
             case CREATED:
-                responseEntity = ResponseEntity.created(URI.create(ENDPOINT + "/" + location.getName())).body(location);
+                responseEntity = ResponseEntity
+                    .created(URI.create(ENDPOINT + "/" + location.getName())).body(location);
                 break;
             case CONFLICT:
                 responseEntity = ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -40,7 +41,8 @@ class RegisterLocationController {
                 responseEntity = ResponseEntity.badRequest().body(httpResponse);
                 break;
             default:
-                responseEntity = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(httpResponse);
+                responseEntity = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(httpResponse);
         }
 
         return responseEntity;

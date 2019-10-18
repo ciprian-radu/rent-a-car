@@ -17,7 +17,8 @@ class RetrieveLocationsControllerTest {
 
     @Test
     public void test_retrieveLocations_returnsLocations() {
-        final RetrieveLocationsController retrieveLocationsController = new RetrieveLocationsController(new MockRetrieveLocationsInputPort());
+        final RetrieveLocationsController retrieveLocationsController = new RetrieveLocationsController(
+            new MockRetrieveLocationsInputPort());
         final ResponseEntity<?> responseEntity = retrieveLocationsController.retrieveLocations();
         final List<Location> locations = (List<Location>) responseEntity.getBody();
         Assertions.assertFalse(locations.isEmpty());
@@ -26,7 +27,8 @@ class RetrieveLocationsControllerTest {
     private static class MockRetrieveLocationsInputPort implements RetrieveLocationsInputPort {
 
         @Override
-        public void retrieveLocations(final RetrieveLocationsInputData inputData, final RetrieveLocationsOutputPort outputPort) {
+        public void retrieveLocations(final RetrieveLocationsInputData inputData,
+            final RetrieveLocationsOutputPort outputPort) {
             final RetrieveLocationsOutputData outputData = new RetrieveLocationsOutputData();
             outputData.getLocations().add(outputData.new Location());
             outputPort.present(outputData);

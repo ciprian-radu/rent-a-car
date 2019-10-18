@@ -1930,6 +1930,7 @@ h1, h2, h3, h4, h5, h6 {
   #header #logo h1 {
     font-size: 28px;
   }
+
   #header #logo img {
     max-height: 40px;
   }
@@ -2079,6 +2080,7 @@ h1, h2, h3, h4, h5, h6 {
   #mobile-nav-toggle {
     display: inline;
   }
+
   #nav-menu-container {
     display: none;
   }
@@ -2337,6 +2339,7 @@ body.mobile-nav-active #mobile-nav-toggle {
   .banner-content h6, .banner-content p, .banner-content a {
     display: none;
   }
+
   .banner-content h1 {
     text-align: center;
     padding-top: 50px;
@@ -2390,9 +2393,11 @@ body.mobile-nav-active #mobile-nav-toggle {
   .header-right .wrap-left {
     padding-right: 15px !important;
   }
+
   .header-right .wrap-right {
     padding-left: 15px !important;
   }
+
   .header-right .dates-wrap {
     margin-top: 1rem;
   }
@@ -2579,7 +2584,7 @@ body.mobile-nav-active #mobile-nav-toggle {
   background: rgba(127, 127, 127, 0.5);
   margin-left: 5px;
   margin-right: 5px;
-  @inlcude transition();
+@inlcude transition();
 }
 
 .model-area .owl-dot.active {

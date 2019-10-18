@@ -26,8 +26,9 @@ public class OAuth2ClientConfig {
 
     @Bean
     public OAuth2RestTemplate oAuth2RestTemplate() {
-        final OAuth2RestTemplate template = new OAuth2RestTemplate(clientCredentialsResourceDetails(tokenUrl), new DefaultOAuth2ClientContext(
-            new DefaultAccessTokenRequest()));
+        final OAuth2RestTemplate template = new OAuth2RestTemplate(
+            clientCredentialsResourceDetails(tokenUrl),
+            new DefaultOAuth2ClientContext(new DefaultAccessTokenRequest()));
         template.setAccessTokenProvider(clientAccessTokenProvider());
 
         return template;

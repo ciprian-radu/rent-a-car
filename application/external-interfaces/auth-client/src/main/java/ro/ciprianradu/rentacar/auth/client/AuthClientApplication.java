@@ -10,6 +10,6 @@ public class AuthClientApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(AuthClientApplication.class, args);
-    }    
+    }
 
 }

@@ -1,5 +1,6 @@
 package ro.ciprianradu.rentacar.gateways;
 
+import java.net.URL;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
@@ -14,10 +15,11 @@ class JdbcTemplateFactory {
     }
 
     public static JdbcTemplate createJdbcTemplate() {
-        return new JdbcTemplate(new EmbeddedDatabaseBuilder()
-            .setType(EmbeddedDatabaseType.H2)
-            .addScript("classpath:db/h2/schema.sql")
-            .addScript("classpath:db/h2/test-data.sql").build());
+        final URL schemaUrl = JdbcTemplateFactory.class.getResource("/db/h2/schema.sql");
+        final URL testDataUrl = JdbcTemplateFactory.class.getResource("/db/h2/schema.sql");
+        return new JdbcTemplate(new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2)
+            .addScript("file:///" + schemaUrl.getPath())
+            .addScript("file:///" + testDataUrl.getPath()).build());
     }
 
 }

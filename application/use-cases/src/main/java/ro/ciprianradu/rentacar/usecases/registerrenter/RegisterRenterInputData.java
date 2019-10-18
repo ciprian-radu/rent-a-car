@@ -22,7 +22,8 @@ public class RegisterRenterInputData {
      * @param lastName the last name of the renter (must not be empty nor <code>null</code>)
      * @param email the e-mail address of the renter (must not be empty nor <code>null</code>)
      */
-    public RegisterRenterInputData(final String firstName, final String lastName, final String email) {
+    public RegisterRenterInputData(final String firstName, final String lastName,
+        final String email) {
         if (Objects.isNull(firstName) || firstName.isEmpty()) {
             throw new IllegalArgumentException("First name is mandatory!");
         }

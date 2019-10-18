@@ -53,11 +53,8 @@ public class SearchDto {
 
     @Override
     public String toString() {
-        return "SearchDto{" +
-            "pickupDate='" + pickupDate + '\'' +
-            ", pickupLocationName='" + pickupLocationName + '\'' +
-            ", returnDate='" + returnDate + '\'' +
-            ", returnLocationName='" + returnLocationName + '\'' +
-            '}';
+        return "SearchDto{" + "pickupDate='" + pickupDate + '\'' + ", pickupLocationName='"
+            + pickupLocationName + '\'' + ", returnDate='" + returnDate + '\''
+            + ", returnLocationName='" + returnLocationName + '\'' + '}';
     }
 }

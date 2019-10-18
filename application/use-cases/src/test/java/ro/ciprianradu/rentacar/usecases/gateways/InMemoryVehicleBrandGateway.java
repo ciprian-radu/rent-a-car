@@ -8,7 +8,8 @@ import ro.ciprianradu.rentacar.entity.VehicleBrand;
 /**
  *
  */
-public class InMemoryVehicleBrandGateway extends EntityGateway<VehicleBrand> implements VehicleBrandGateway {
+public class InMemoryVehicleBrandGateway extends EntityGateway<VehicleBrand> implements
+    VehicleBrandGateway {
 
     @Override
     public Optional<VehicleBrand> findByBrand(final String brand) {

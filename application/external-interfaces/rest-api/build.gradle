@@ -18,15 +18,15 @@ dependencies {
     runtime project(':application:external-interfaces:databases:initializer')
     runtime project(':application:external-interfaces:databases:postgresql')
 
-    compile('org.springframework.boot:spring-boot-starter-data-rest')
-    compile('org.springframework.cloud:spring-cloud-starter-security')
+    implementation('org.springframework.boot:spring-boot-starter-data-rest')
+    implementation('org.springframework.cloud:spring-cloud-starter-security')
+    implementation('org.springframework.cloud:spring-cloud-starter-oauth2')
 
     runtime('org.springframework.boot:spring-boot-starter-actuator')
 
-    testCompile('org.springframework.boot:spring-boot-starter-test')
-    testCompile libs.junit_api
-    testCompile libs.mockito_core
-    testRuntime libs.junit_engine
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testImplementation libs.junit
+    testImplementation libs.mockito_core
 }
 
 dependencyManagement {

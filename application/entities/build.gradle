@@ -3,6 +3,5 @@ description = "Entities encapsulate Enterprise wide business rules. " +
         "It doesn’t matter so long as the entities could be used by many different applications in the enterprise."
 
 dependencies {
-    testCompile libs.junit_api
-    testRuntime libs.junit_engine
+    testImplementation libs.junit
 }

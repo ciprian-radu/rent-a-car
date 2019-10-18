@@ -30,18 +30,22 @@ class SearchVehiclesController {
     }
 
     @GetMapping(value = ENDPOINT)
-    public ResponseEntity<?> searchVehicles(@RequestParam @DateTimeFormat(iso = ISO.DATE_TIME) ZonedDateTime pickupDate, @RequestParam String pickupLocation,
-        @RequestParam @DateTimeFormat(iso = ISO.DATE_TIME) ZonedDateTime returnDate, @RequestParam String returnLocation) {
+    public ResponseEntity searchVehicles(
+        @RequestParam @DateTimeFormat(iso = ISO.DATE_TIME) ZonedDateTime pickupDate,
+        @RequestParam String pickupLocation,
+        @RequestParam @DateTimeFormat(iso = ISO.DATE_TIME) ZonedDateTime returnDate,
+        @RequestParam String returnLocation) {
         ResponseEntity responseEntity;
-        final SearchVehiclesHttpResponse searchVehiclesHttpResponse = adapter.searchVehicles(pickupDate, pickupLocation, returnDate, returnLocation);
+        final SearchVehiclesHttpResponse searchVehiclesHttpResponse = adapter
+            .searchVehicles(pickupDate, pickupLocation, returnDate, returnLocation);
         final HttpResponse httpResponse = searchVehiclesHttpResponse.getHttpResponse();
-        final Set<VehicleCategory> vehicleCategories = searchVehiclesHttpResponse.getVehicleCategories();
-        switch (httpResponse.getStatus()) {
-            case OK:
-                responseEntity = ResponseEntity.ok(vehicleCategories);
-                break;
-            default:
-                responseEntity = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(httpResponse);
+        final Set<VehicleCategory> vehicleCategories = searchVehiclesHttpResponse
+            .getVehicleCategories();
+        if (ro.ciprianradu.rentacar.http.HttpStatus.OK.equals(httpResponse.getStatus())) {
+            responseEntity = ResponseEntity.ok(vehicleCategories);
+        } else {
+            responseEntity = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(httpResponse);
         }
 
         return responseEntity;

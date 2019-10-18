@@ -31,14 +31,15 @@ public class SearchController {
 
     private static final Logger log = LoggerFactory.getLogger(SearchController.class);
 
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter
+        .ofPattern("MM/dd/yyyy");
 
     @Autowired
     private RestApiService restApiService;
 
     @PostMapping
-    public String searchVehicles(@ModelAttribute("search") @Valid SearchDto searchDto, BindingResult result, Model model,
-        RedirectAttributes redirectAttributes) {
+    public String searchVehicles(@ModelAttribute("search") @Valid SearchDto searchDto,
+        BindingResult result, Model model, RedirectAttributes redirectAttributes) {
         final Optional<ZonedDateTime> pickupDateOptional = validatePickupDate(searchDto, result);
         final Optional<ZonedDateTime> returnDateOptional = validateReturnDate(searchDto, result);
         validateDates(searchDto, result, pickupDateOptional, returnDateOptional);
@@ -67,40 +68,50 @@ public class SearchController {
         return "redirect:/search-results.html";
     }
 
-    private Optional<ZonedDateTime> validatePickupDate(final SearchDto searchDto, final BindingResult result) {
+    private Optional<ZonedDateTime> validatePickupDate(final SearchDto searchDto,
+        final BindingResult result) {
         ZonedDateTime pickupZonedDateTime = null;
 
         try {
-            final LocalDate pickupLocalDate = LocalDate.parse(searchDto.getPickupDate(), DATE_TIME_FORMATTER);
+            final LocalDate pickupLocalDate = LocalDate
+                .parse(searchDto.getPickupDate(), DATE_TIME_FORMATTER);
             pickupZonedDateTime = pickupLocalDate.atStartOfDay(ZoneOffset.UTC);
         } catch (DateTimeParseException e) {
-            log.error("Invalid pickup date '" + searchDto.getPickupDate() + "'!");
-            result.rejectValue("pickupDate", "pickupDate.invalid", "Invalid pickup date '" + searchDto.getPickupDate() + "'!");
+            log.error("Invalid pickup date '{}'!", searchDto.getPickupDate());
+            result.rejectValue("pickupDate", "pickupDate.invalid",
+                "Invalid pickup date '" + searchDto.getPickupDate() + "'!");
         }
 
         return Optional.ofNullable(pickupZonedDateTime);
     }
 
-    private Optional<ZonedDateTime> validateReturnDate(final SearchDto searchDto, final BindingResult result) {
+    private Optional<ZonedDateTime> validateReturnDate(final SearchDto searchDto,
+        final BindingResult result) {
         ZonedDateTime returnZonedDateTime = null;
 
         try {
-            final LocalDate returnLocalDate = LocalDate.parse(searchDto.getReturnDate(), DATE_TIME_FORMATTER);
+            final LocalDate returnLocalDate = LocalDate
+                .parse(searchDto.getReturnDate(), DATE_TIME_FORMATTER);
             returnZonedDateTime = returnLocalDate.atTime(23, 59, 59).atZone(ZoneOffset.UTC);
         } catch (DateTimeParseException e) {
-            log.error("Invalid return date '" + searchDto.getReturnDate() + "'!");
-            result.rejectValue("returnDate", "returnDate.invalid", "Invalid return date '" + searchDto.getReturnDate() + "'!");
+            log.error("Invalid return date '{}'!", searchDto.getReturnDate());
+            result.rejectValue("returnDate", "returnDate.invalid",
+                "Invalid return date '" + searchDto.getReturnDate() + "'!");
         }
 
         return Optional.ofNullable(returnZonedDateTime);
     }
 
     private void validateDates(final SearchDto searchDto, final BindingResult result,
-        final Optional<ZonedDateTime> pickupDateOptional, final Optional<ZonedDateTime> returnDateOptional) {
-        if (pickupDateOptional.isPresent() && returnDateOptional.isPresent() && returnDateOptional.get().isBefore(pickupDateOptional.get())) {
-            log.error("Return date '" + searchDto.getReturnDate() + "' is before pickup date '" + searchDto.getPickupDate() + "'!");
+        final Optional<ZonedDateTime> pickupDateOptional,
+        final Optional<ZonedDateTime> returnDateOptional) {
+        if (pickupDateOptional.isPresent() && returnDateOptional.isPresent() && returnDateOptional
+            .get().isBefore(pickupDateOptional.get())) {
+            log.error("Return date '{}' is before pickup date '{}'!", searchDto.getReturnDate(),
+                searchDto.getPickupDate());
             result.rejectValue("returnDate", "returnDate.beforePickupDate",
-                "Return date '" + searchDto.getReturnDate() + "' is before pickup date '" + searchDto.getPickupDate() + "'!");
+                "Return date '" + searchDto.getReturnDate() + "' is before pickup date '"
+                    + searchDto.getPickupDate() + "'!");
         }
     }
 

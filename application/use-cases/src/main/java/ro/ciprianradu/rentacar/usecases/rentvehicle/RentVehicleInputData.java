@@ -29,16 +29,21 @@ public class RentVehicleInputData {
     /**
      * Constructor
      *
-     * @param renterEmail the e-mail address of the person which rents the vehicle (must not be empty nor <code>null</code>)
+     * @param renterEmail the e-mail address of the person which rents the vehicle (must not be
+     * empty nor <code>null</code>)
      * @param vehicleType the type of the vehicle (must not be empty nor <code>null</code>)
-     * @param pickupDate the date and time when the vehicle will be picked up (must not be <code>null</code>, after the current time and before {@link
-     * #returnDate})
-     * @param pickupLocationName the name of pickup location (must not be empty nor <code>null</code>)
-     * @param returnDate the date and time when the vehicle will be returned (must not be <code>null</code> and after {@link #pickupDate})
-     * @param returnLocationName the name of pickup location (must not be empty nor <code>null</code>)
+     * @param pickupDate the date and time when the vehicle will be picked up (must not be
+     * <code>null</code>, after the current time and before {@link #returnDate})
+     * @param pickupLocationName the name of pickup location (must not be empty nor
+     * <code>null</code>)
+     * @param returnDate the date and time when the vehicle will be returned (must not be
+     * <code>null</code> and after {@link #pickupDate})
+     * @param returnLocationName the name of pickup location (must not be empty nor
+     * <code>null</code>)
      */
-    public RentVehicleInputData(final String renterEmail, final String vehicleType, final String vehicleBrand, final String vehicleModel,
-        final ZonedDateTime pickupDate, final String pickupLocationName, final ZonedDateTime returnDate,
+    public RentVehicleInputData(final String renterEmail, final String vehicleType,
+        final String vehicleBrand, final String vehicleModel, final ZonedDateTime pickupDate,
+        final String pickupLocationName, final ZonedDateTime returnDate,
         final String returnLocationName) {
         if (Objects.isNull(renterEmail) || renterEmail.isEmpty()) {
             throw new IllegalArgumentException("Renter e-mail is mandatory!");
@@ -58,9 +63,6 @@ public class RentVehicleInputData {
         if (Objects.isNull(returnDate)) {
             throw new IllegalArgumentException("Return date is mandatory!");
         }
-//        if (pickupDate.isBefore(ZonedDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()))) {
-//            throw new IllegalArgumentException("Pickup date is in the past!");
-//        }
         if (pickupDate.isAfter(returnDate)) {
             throw new IllegalArgumentException("Pickup date must be before return date!");
         }

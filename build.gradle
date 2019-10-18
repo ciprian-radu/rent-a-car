@@ -1,5 +1,6 @@
 plugins {
-    id 'com.github.ben-manes.versions' version '0.20.0'
+    id 'com.github.ben-manes.versions' version '0.25.0'
+    id 'org.javamodularity.moduleplugin' version '1.6.0'
 }
 
 allprojects {
@@ -14,27 +15,26 @@ allprojects {
 subprojects {
 
     apply plugin: 'java'
-    sourceCompatibility = JavaVersion.VERSION_1_8
+    apply plugin: "org.javamodularity.moduleplugin"
+    sourceCompatibility = JavaVersion.VERSION_12
 
     ext {
-        junit_version = '5.3.1'
-        mockito_version = '2.23.0'
-        spring_version = '5.1.1.RELEASE'
-        spring_boot_version = '2.0.6.RELEASE'
-        spring_cloud_version = 'Finchley.SR1'
-        h2_version = '1.4.197'
-        postgresql_version = '42.2.5'
-        thymeleaf_extras_version = '3.0.3.RELEASE'
-        slf4j_version = '1.7.25'
-        logback_version = '1.2.3'
+        junit_version = '5.5.2'
+        mockito_version = '3.0.0'
+        archunit_version = '0.11.0'
+        spring_version = '5.1.9.RELEASE'
+        spring_boot_version = '2.1.8.RELEASE'
+        spring_cloud_version = 'Greenwich.SR3'
+        h2_version = '1.4.199'
+        postgresql_version = '42.2.8'
+        thymeleaf_extras_version = '3.0.4.RELEASE'
+        slf4j_version = '2.0.0-alpha0'
+        logback_version = '1.3.0-alpha4'
     }
 
     ext.libs = [
-            junit_api       : [
-                    "org.junit.jupiter:junit-jupiter-api:${junit_version}",
-            ],
-            junit_engine    : [
-                    "org.junit.jupiter:junit-jupiter-engine:${junit_version}",
+            junit           : [
+                    "org.junit.jupiter:junit-jupiter:${junit_version}",
             ],
             mockito_core    : [
                     "org.mockito:mockito-core:${mockito_version}",
@@ -53,7 +53,7 @@ subprojects {
                     "org.springframework:spring-context:${spring_version}",
             ],
             thymeleaf_extras: [
-                    "org.thymeleaf.extras:thymeleaf-extras-springsecurity4:${thymeleaf_extras_version}"
+                    "org.thymeleaf.extras:thymeleaf-extras-springsecurity5:${thymeleaf_extras_version}"
             ],
             log             : [
                     "org.slf4j:slf4j-api:${slf4j_version}",
@@ -63,12 +63,14 @@ subprojects {
             ],
     ]
 
+    dependencies {
+        // See https://github.com/java9-modularity/gradle-modules-plugin/issues/97#issuecomment-527264923
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.5.2'
+        testRuntimeOnly 'org.junit.platform:junit-platform-commons:1.5.2'
+    }
+
     test {
         useJUnitPlatform()
-
-        jacoco {
-            append = false
-        }
 
         testLogging {
             events "passed", "skipped", "failed"
@@ -82,9 +84,9 @@ subprojects {
     jacocoTestReport {
         dependsOn test
 
-        additionalSourceDirs = files(sourceSets.main.allSource.srcDirs)
-        sourceDirectories = files(sourceSets.main.allSource.srcDirs)
-        classDirectories = files(sourceSets.main.output)
+        additionalSourceDirs.from = files(sourceSets.main.allSource.srcDirs)
+        sourceDirectories.from = files(sourceSets.main.allSource.srcDirs)
+        classDirectories.from = files(sourceSets.main.output)
 
         reports {
             xml.enabled = false
@@ -99,26 +101,36 @@ subprojects {
 
 }
 
-// Credits: https://gist.github.com/aalmiray/e6f54aa4b3803be0bcac
-task jacocoRootReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
-    dependsOn = subprojects.test
-    additionalSourceDirs = files(subprojects.sourceSets.main.allSource.srcDirs)
-    sourceDirectories = files(subprojects.sourceSets.main.allSource.srcDirs)
-    classDirectories = files(subprojects.sourceSets.main.output)
-    executionData = files(subprojects.jacocoTestReport.executionData)
-    reports {
-        html.enabled = true
-        xml.enabled = true
-        csv.enabled = false
-        html.destination file("${buildDir}/jacocoHtml")
+task jacocoMergeAll(type: JacocoMerge) {
+    dependsOn(subprojects.test, subprojects.jacocoTestReport)
+    def jacocoProjects = subprojects.findAll {
+        def buildDir = it.getBuildDir()
+        def testExecFile = file(buildDir.getAbsolutePath() + '/jacoco/test.exec')
+        logger.debug('Looking for JaCoCo test.exec file {}', testExecFile)
+        return testExecFile.exists()
     }
-    onlyIf = {
-        true
-    }
-    doFirst {
-        executionData = files(executionData.findAll {
-            it.exists()
-        })
+    jacocoProjects.each { subproject ->
+        executionData subproject.tasks.withType(Test)
     }
 }
 
+// Credits: https://discuss.gradle.org/t/merge-jacoco-coverage-reports-for-multiproject-setups/12100/10
+task jacocoRootReport(type: JacocoReport, group: 'Coverage reports') {
+    description = 'Generates an aggregate report from all subprojects'
+    dependsOn(jacocoMergeAll)
+
+    additionalSourceDirs.from =
+            files(subprojects.sourceSets.main.allSource.srcDirs)
+    sourceDirectories.from =
+            files(subprojects.sourceSets.main.allSource.srcDirs)
+    classDirectories.from =
+            files(subprojects.sourceSets.main.output)
+    executionData.from =
+            files("${buildDir}/jacoco/jacocoMergeAll.exec")
+
+    reports {
+        html.enabled = true
+        xml.enabled = false
+        html.destination file("${buildDir}/jacocoHtml")
+    }
+}

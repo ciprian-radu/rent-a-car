@@ -1,7 +1,11 @@
 package ro.ciprianradu.rentacar.usecases.gateways;
 
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import ro.ciprianradu.rentacar.entity.Entity;
 
 
@@ -106,8 +110,6 @@ class EntityGateway<T extends Entity> {
     /**
      * Returns all instances of the type with the given IDs.
      *
-     * @param ids
-     * @return
      * @throws IllegalArgumentException if {@code ids} is {@literal null}.
      */
     public Iterable<T> findAllById(Iterable<String> ids) {
@@ -143,7 +145,6 @@ class EntityGateway<T extends Entity> {
     /**
      * Deletes a given entity.
      *
-     * @param entity
      * @throws IllegalArgumentException in case the given entity is {@literal null}.
      */
     public void delete(T entity) {
@@ -157,7 +158,6 @@ class EntityGateway<T extends Entity> {
     /**
      * Deletes the given entities.
      *
-     * @param entities
      * @throws IllegalArgumentException in case the given {@link Iterable} is {@literal null}.
      */
     public void deleteAll(Iterable<? extends T> entities) {

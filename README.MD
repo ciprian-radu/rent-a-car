@@ -84,6 +84,9 @@ See [REST API README.md](application/external-interfaces/rest-api/README.md).
 
 # How to Run
 
+The project is set to use a PostgreSQL database by default.
+See [PostgreSQL README.md](application/external-interfaces/databases/postgresql/README.MD/README.md) for instructions on how to create the database.
+
 We have three Spring Boot applications that we need to start.
 
 ## Using Gradle
@@ -118,7 +121,7 @@ Please read the [How to Contribute](./CONTRIBUTING.MD) guide.
 
 # Deployment
 
-This software system requires Java 8 and an Internet connection (for downloading third party dependencies).
+This software system requires Java 12 (there is a Java 8 branch but it's no longer maintained) and an Internet connection (for downloading third party dependencies).  
 This software system uses [Gradle](https://gradle.org/). Specifically, we use the [Gradle Wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html), which allows the automatic download of the specified Gradle version.
 
 Rent a Car can be deployed locally or on Heroku.
@@ -127,7 +130,8 @@ Locally the Web Application runs at [http://localhost:8080](http://localhost:808
 
 # Useful Gradle Commands
 
-1. `./gradlew clean build`
+1. `./gradlew clean build`  
+You may also use something like `./gradlew -Dorg.gradle.java.home=/usr/lib/jvm/java-12-openjdk-amd64/ clean build` to specify a certain JDK.
 
 2. `./gradlew dependencyUpdates -Drevision=release`
 

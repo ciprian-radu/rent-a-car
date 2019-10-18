@@ -20,7 +20,8 @@ class RegisterRenterControllerTest {
 
     @Test
     void test_registerRenter_noRenter_doesNotRegister() {
-        final RegisterRenterController controller = new RegisterRenterController(new MockRegisterRenterInputPort());
+        final RegisterRenterController controller = new RegisterRenterController(
+            new MockRegisterRenterInputPort());
         Renter renter = new Renter();
         renter.setFirstName("John");
         renter.setLastName("Doe");
@@ -31,7 +32,8 @@ class RegisterRenterControllerTest {
 
     @Test
     void test_registerRenter_noRenterFirstName_doesNotRegister() {
-        final RegisterRenterController controller = new RegisterRenterController(new MockRegisterRenterInputPort());
+        final RegisterRenterController controller = new RegisterRenterController(
+            new MockRegisterRenterInputPort());
         Renter renter = new Renter();
         renter.setLastName("Doe");
         renter.setEmail("john.doe@email.com");
@@ -41,7 +43,8 @@ class RegisterRenterControllerTest {
 
     @Test
     void test_registerRenter_noRenterLastName_doesNotRegister() {
-        final RegisterRenterController controller = new RegisterRenterController(new MockRegisterRenterInputPort());
+        final RegisterRenterController controller = new RegisterRenterController(
+            new MockRegisterRenterInputPort());
         Renter renter = new Renter();
         renter.setFirstName("John");
         renter.setEmail("john.doe@email.com");
@@ -51,7 +54,8 @@ class RegisterRenterControllerTest {
 
     @Test
     void test_registerRenter_noRenterEmail_doesNotRegister() {
-        final RegisterRenterController controller = new RegisterRenterController(new MockRegisterRenterInputPort());
+        final RegisterRenterController controller = new RegisterRenterController(
+            new MockRegisterRenterInputPort());
         Renter renter = new Renter();
         renter.setFirstName("John");
         renter.setLastName("Doe");
@@ -61,7 +65,8 @@ class RegisterRenterControllerTest {
 
     @Test
     void test_registerRenter_invalidEmail_registers() {
-        final RegisterRenterController controller = new RegisterRenterController(new MockRegisterRenterInputPort());
+        final RegisterRenterController controller = new RegisterRenterController(
+            new MockRegisterRenterInputPort());
         Renter renter = new Renter();
         renter.setFirstName("John");
         renter.setLastName("Doe");
@@ -72,18 +77,22 @@ class RegisterRenterControllerTest {
 
     @Test
     void test_registerRenter_validRenter_registers() {
-        final RegisterRenterController controller = new RegisterRenterController(new MockRegisterRenterInputPort());
+        final RegisterRenterController controller = new RegisterRenterController(
+            new MockRegisterRenterInputPort());
         Renter renter = new Renter();
         renter.setFirstName("John");
         renter.setLastName("Doe");
         renter.setEmail("john.doe@email.com");
         final ResponseEntity<?> responseEntity = controller.registerRenter(renter);
-        Assertions.assertEquals(ResponseEntity.created(URI.create(RegisterRenterController.ENDPOINT + "/" + renter.getEmail())).body(renter), responseEntity);
+        Assertions.assertEquals(ResponseEntity
+            .created(URI.create(RegisterRenterController.ENDPOINT + "/" + renter.getEmail()))
+            .body(renter), responseEntity);
     }
 
     @Test
     void test_registerRenter_duplicateRenter_doesNotRegister() {
-        final RegisterRenterController controller = new RegisterRenterController(new MockRegisterRenterInputPort());
+        final RegisterRenterController controller = new RegisterRenterController(
+            new MockRegisterRenterInputPort());
         Renter renter = new Renter();
         renter.setFirstName("John");
         renter.setLastName("Doe");
@@ -98,7 +107,8 @@ class RegisterRenterControllerTest {
         private List<String> registeredRenters = new ArrayList<>();
 
         @Override
-        public void registerRenter(final RegisterRenterInputData inputData, final RegisterRenterOutputPort outputPort) {
+        public void registerRenter(final RegisterRenterInputData inputData,
+            final RegisterRenterOutputPort outputPort) {
             boolean registered;
             if (registeredRenters.contains(inputData.getEmail())) {
                 registered = false;

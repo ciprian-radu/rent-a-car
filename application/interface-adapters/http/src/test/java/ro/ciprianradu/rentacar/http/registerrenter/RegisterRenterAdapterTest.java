@@ -26,20 +26,23 @@ class RegisterRenterAdapterTest {
 
     @Test
     public void test_RegisterRenterAdapter_instantiates() {
-        final RegisterRenterAdapter registerRenterAdapter = new RegisterRenterAdapter(new MockRegisterRenterInputPort());
+        final RegisterRenterAdapter registerRenterAdapter = new RegisterRenterAdapter(
+            new MockRegisterRenterInputPort());
         Assertions.assertNotNull(registerRenterAdapter);
     }
 
     @Test
     public void test_registerRenter_nullRenter_returnsBadRequest() {
-        final RegisterRenterAdapter registerRenterAdapter = new RegisterRenterAdapter(new MockRegisterRenterInputPort());
+        final RegisterRenterAdapter registerRenterAdapter = new RegisterRenterAdapter(
+            new MockRegisterRenterInputPort());
         final HttpResponse httpResponse = registerRenterAdapter.registerRenter(null);
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, httpResponse.getStatus());
     }
 
     @Test
     public void test_registerRenter_nullRenterFirstName_returnsBadRequest() {
-        final RegisterRenterAdapter registerRenterAdapter = new RegisterRenterAdapter(new MockRegisterRenterInputPort());
+        final RegisterRenterAdapter registerRenterAdapter = new RegisterRenterAdapter(
+            new MockRegisterRenterInputPort());
         final Renter renter = new Renter();
         renter.setFirstName(null);
         renter.setLastName("Doe");
@@ -50,7 +53,8 @@ class RegisterRenterAdapterTest {
 
     @Test
     public void test_registerRenter_nullRenterLastName_returnsBadRequest() {
-        final RegisterRenterAdapter registerRenterAdapter = new RegisterRenterAdapter(new MockRegisterRenterInputPort());
+        final RegisterRenterAdapter registerRenterAdapter = new RegisterRenterAdapter(
+            new MockRegisterRenterInputPort());
         final Renter renter = new Renter();
         renter.setFirstName("John");
         renter.setLastName(null);
@@ -61,7 +65,8 @@ class RegisterRenterAdapterTest {
 
     @Test
     public void test_registerRenter_invalidEmail_returnsBadRequest() {
-        final RegisterRenterAdapter registerRenterAdapter = new RegisterRenterAdapter(new MockRegisterRenterInputPort());
+        final RegisterRenterAdapter registerRenterAdapter = new RegisterRenterAdapter(
+            new MockRegisterRenterInputPort());
         final Renter renter = new Renter();
         renter.setFirstName("John");
         renter.setLastName("Doe");
@@ -72,7 +77,8 @@ class RegisterRenterAdapterTest {
 
     @Test
     public void test_registerRenter_returnsCreated() {
-        final RegisterRenterAdapter registerRenterAdapter = new RegisterRenterAdapter(new MockRegisterRenterInputPort());
+        final RegisterRenterAdapter registerRenterAdapter = new RegisterRenterAdapter(
+            new MockRegisterRenterInputPort());
         final Renter renter = new Renter();
         renter.setFirstName("John");
         renter.setLastName("Doe");
@@ -83,7 +89,8 @@ class RegisterRenterAdapterTest {
 
     @Test
     public void test_registerRenter_sameRenter_returnsConflict() {
-        final RegisterRenterAdapter registerRenterAdapter = new RegisterRenterAdapter(new MockRegisterRenterInputPort());
+        final RegisterRenterAdapter registerRenterAdapter = new RegisterRenterAdapter(
+            new MockRegisterRenterInputPort());
         final Renter renter = new Renter();
         renter.setFirstName("John");
         renter.setLastName("Doe");
@@ -93,13 +100,14 @@ class RegisterRenterAdapterTest {
         httpResponse = registerRenterAdapter.registerRenter(renter);
         Assertions.assertEquals(HttpStatus.CONFLICT, httpResponse.getStatus());
     }
-    
+
     private static class MockRegisterRenterInputPort implements RegisterRenterInputPort {
 
         private List<String> registeredRenters = new ArrayList<>();
 
         @Override
-        public void registerRenter(final RegisterRenterInputData inputData, final RegisterRenterOutputPort outputPort) {
+        public void registerRenter(final RegisterRenterInputData inputData,
+            final RegisterRenterOutputPort outputPort) {
             boolean registered;
             if (registeredRenters.contains(inputData.getEmail())) {
                 registered = false;

@@ -1,0 +1,41 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${spring_boot_version}")
+    }
+}
+
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+dependencies {
+    implementation 'com.tngtech.archunit:archunit:' + archunit_version
+    testCompile 'com.tngtech.archunit:archunit-junit5-api:' + archunit_version
+    testRuntime 'com.tngtech.archunit:archunit-junit5-engine:' + archunit_version
+
+    implementation('org.springframework.boot:spring-boot-starter-web')
+
+    testRuntime project(':application:entities')
+
+    testRuntime project(':application:use-cases')
+
+    testRuntime project(':application:interface-adapters:gateways')
+    testRuntime project(':application:interface-adapters:http')
+
+    testRuntime project(':application:external-interfaces:rest-api')
+    testRuntime project(':application:external-interfaces:databases:initializer')
+    testRuntime project(':application:external-interfaces:databases:h2-embedded')
+    testRuntime project(':application:external-interfaces:databases:h2-local')
+    testRuntime project(':application:external-interfaces:databases:postgresql')
+    testRuntime project(':application:external-interfaces:auth-server')
+    testRuntime project(':application:external-interfaces:auth-client')
+
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${spring_cloud_version}"
+    }
+}

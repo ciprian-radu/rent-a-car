@@ -48,16 +48,19 @@ public class RentVehicleAdapter {
             isValid = false;
         } else {
             isValid = reservation.getRenterEmail() != null && reservation.getVehicleType() != null
-                && reservation.getPickupDate() != null && reservation.getPickupLocationName() != null
-                && reservation.getReturnDate() != null && reservation.getReturnLocationName() != null;
+                && reservation.getPickupDate() != null
+                && reservation.getPickupLocationName() != null
+                && reservation.getReturnDate() != null
+                && reservation.getReturnLocationName() != null;
         }
 
         return isValid;
     }
 
     private static RentVehicleInputData buildInputData(final Reservation reservation) {
-        return new RentVehicleInputData(reservation.getRenterEmail(), reservation.getVehicleType(), reservation.getVehicleBrand(),
-            reservation.getVehicleModel(), reservation.getPickupDate(), reservation.getPickupLocationName(),
+        return new RentVehicleInputData(reservation.getRenterEmail(), reservation.getVehicleType(),
+            reservation.getVehicleBrand(), reservation.getVehicleModel(),
+            reservation.getPickupDate(), reservation.getPickupLocationName(),
             reservation.getReturnDate(), reservation.getReturnLocationName());
     }
 

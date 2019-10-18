@@ -23,15 +23,19 @@ public class RegisterVehicleInputData {
     /**
      * Constructor
      *
-     * @param id the ID (license plate number) of this vehicle (must not be empty nor <code>null</code>)
+     * @param id the ID (license plate number) of this vehicle (must not be empty nor
+     * <code>null</code>)
      * @param type the type of this vehicle (must not be empty nor <code>null</code>)
      * @param brand the brand of this vehicle (must not be empty nor <code>null</code>)
      * @param model the model of this vehicle (must not be empty nor <code>null</code>)
-     * @param rate how much it costs (in EURO) to reserve this vehicle for one day (must be positive)
-     * @param location the name of the location to which this vehicle is associated to (must not be empty nor <code>null</code>). This is the pickup location. A
-     * vehicle may be returned to any location.
+     * @param rate how much it costs (in EURO) to reserve this vehicle for one day (must be
+     * positive)
+     * @param location the name of the location to which this vehicle is associated to (must not be
+     * empty nor <code>null</code>). This is the pickup location. A vehicle may be returned to any
+     * location.
      */
-    public RegisterVehicleInputData(final String id, final String type, final String brand, final String model, final BigDecimal rate, final String location) {
+    public RegisterVehicleInputData(final String id, final String type, final String brand,
+        final String model, final BigDecimal rate, final String location) {
         if (Objects.isNull(id) || id.isEmpty()) {
             throw new IllegalArgumentException("Vehicle ID is mandatory!");
         }

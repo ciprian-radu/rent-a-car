@@ -53,14 +53,16 @@ public class UserRegistrationController {
         BindingResult result) {
 
         if (userDetailsManager.userExists(userDto.getEmail())) {
-            result.rejectValue("email", "email.exists", "There is already an account registered with that email");
+            result.rejectValue("email", "email.exists",
+                "There is already an account registered with that email");
         }
 
         if (result.hasErrors()) {
             return "registration.html";
         }
 
-        final UserDetails userDetails = new User(userDto.getEmail(), passwordEncoder.encode(userDto.getPassword()),
+        final UserDetails userDetails = new User(userDto.getEmail(),
+            passwordEncoder.encode(userDto.getPassword()),
             Collections.singleton(new SimpleGrantedAuthority("RENTER")));
         userDetailsManager.createUser(userDetails);
 
@@ -73,7 +75,8 @@ public class UserRegistrationController {
                 userDetailsManager.deleteUser(userDto.getEmail());
             }
         } catch (RuntimeException e) {
-            log.error("Unable to register a Renter for the new user. This new user will be deleted.", e);
+            log.error(
+                "Unable to register a Renter for the new user. This new user will be deleted.", e);
             userDetailsManager.deleteUser(userDto.getEmail());
             log.debug("User deleted.");
         }

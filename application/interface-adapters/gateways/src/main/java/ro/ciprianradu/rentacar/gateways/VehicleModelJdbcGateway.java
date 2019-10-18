@@ -33,14 +33,16 @@ public class VehicleModelJdbcGateway implements VehicleModelGateway {
     @Override
     public VehicleModel save(final VehicleModel vehicleModel) {
         jdbcTemplate.update(
-            "INSERT INTO RENT_A_CAR.VEHICLE_MODEL (NAME, AC, AUTOMATIC_TRANSMISSION, SEATS) VALUES (?, ?, ?, ?)", vehicleModel.getName(), vehicleModel.isAc(),
-            vehicleModel.isAutomaticTransmission(), vehicleModel.getSeats());
+            "INSERT INTO RENT_A_CAR.VEHICLE_MODEL (NAME, AC, AUTOMATIC_TRANSMISSION, SEATS) VALUES (?, ?, ?, ?)",
+            vehicleModel.getName(), vehicleModel.isAc(), vehicleModel.isAutomaticTransmission(),
+            vehicleModel.getSeats());
         return vehicleModel;
     }
 
     @Override
     public Optional<VehicleModel> findByModel(final String model) {
-        final List<VehicleModel> vehicleModels = jdbcTemplate.query("SELECT * FROM RENT_A_CAR.VEHICLE_MODEL WHERE NAME = ?", mapper, new Object[]{model});
+        final List<VehicleModel> vehicleModels = jdbcTemplate
+            .query("SELECT * FROM RENT_A_CAR.VEHICLE_MODEL WHERE NAME = ?", mapper, model);
         return Optional.ofNullable(vehicleModels.isEmpty() ? null : vehicleModels.get(0));
     }
 

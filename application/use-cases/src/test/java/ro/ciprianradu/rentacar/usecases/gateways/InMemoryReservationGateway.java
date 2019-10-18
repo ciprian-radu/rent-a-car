@@ -9,7 +9,8 @@ import ro.ciprianradu.rentacar.entity.Reservation;
 /**
  *
  */
-public class InMemoryReservationGateway extends EntityGateway<Reservation> implements ReservationGateway {
+public class InMemoryReservationGateway extends EntityGateway<Reservation> implements
+    ReservationGateway {
 
     private static boolean isAfterOrEqual(final ZonedDateTime left, final ZonedDateTime right) {
         return left.isAfter(right) || left.isEqual(right);
@@ -32,12 +33,14 @@ public class InMemoryReservationGateway extends EntityGateway<Reservation> imple
     }
 
     @Override
-    public Optional<Reservation> findByOverlappingRentPeriod(final String vehicleId, final ZonedDateTime pickupDate, final ZonedDateTime returnDate) {
+    public Optional<Reservation> findByOverlappingRentPeriod(final String vehicleId,
+        final ZonedDateTime pickupDate, final ZonedDateTime returnDate) {
         final Iterable<Reservation> reservations = findAllByVehicle(vehicleId);
         final List<Reservation> filteredReservations = new ArrayList<>();
         reservations.forEach(r -> {
-            if ((isAfterOrEqual(pickupDate, r.getPickupDate()) && isBeforeOrEqual(pickupDate, r.getReturnDate())) ||
-                (isAfterOrEqual(returnDate, r.getPickupDate()) && isBeforeOrEqual(returnDate, r.getReturnDate()))) {
+            if ((isAfterOrEqual(pickupDate, r.getPickupDate()) && isBeforeOrEqual(pickupDate,
+                r.getReturnDate())) || (isAfterOrEqual(returnDate, r.getPickupDate())
+                && isBeforeOrEqual(returnDate, r.getReturnDate()))) {
                 filteredReservations.add(r);
             }
         });

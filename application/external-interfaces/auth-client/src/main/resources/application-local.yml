@@ -34,5 +34,5 @@ spring:
     cache: false # Necessary for hot swapping (See https://docs.spring.io/spring-boot/docs/current/reference/html/howto-hotswapping.html)
 
 logging:
-    level:
-      org.springframework.security: DEBUG
+  level:
+    org.springframework.security: DEBUG

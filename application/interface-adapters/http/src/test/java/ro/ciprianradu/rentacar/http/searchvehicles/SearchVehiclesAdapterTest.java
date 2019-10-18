@@ -29,14 +29,16 @@ class SearchVehiclesAdapterTest {
 
     @Test
     public void test_SearchVehiclesAdapter_instantiates() {
-        final SearchVehiclesAdapter searchVehiclesAdapter = new SearchVehiclesAdapter(new MockSearchVehiclesInputPort());
+        final SearchVehiclesAdapter searchVehiclesAdapter = new SearchVehiclesAdapter(
+            new MockSearchVehiclesInputPort());
         Assertions.assertNotNull(searchVehiclesAdapter);
     }
 
     @Test
     public void test_searchVehicles_returnsVehicleCategories() {
         final ZonedDateTime pickupDate = ZonedDateTime.now();
-        final SearchVehiclesAdapter searchVehiclesAdapter = new SearchVehiclesAdapter(new MockSearchVehiclesInputPort());
+        final SearchVehiclesAdapter searchVehiclesAdapter = new SearchVehiclesAdapter(
+            new MockSearchVehiclesInputPort());
         final SearchVehiclesHttpResponse searchVehiclesHttpResponse = searchVehiclesAdapter
             .searchVehicles(pickupDate, "pickup", pickupDate.plusHours(1), "return");
         Assertions.assertFalse(searchVehiclesHttpResponse.getVehicleCategories().isEmpty());
@@ -47,7 +49,8 @@ class SearchVehiclesAdapterTest {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             final ZonedDateTime pickupDate = ZonedDateTime.now();
             final ZonedDateTime returnDate = pickupDate; // At least one rent hour is required.
-            final SearchVehiclesAdapter searchVehiclesAdapter = new SearchVehiclesAdapter(new MockSearchVehiclesInputPort());
+            final SearchVehiclesAdapter searchVehiclesAdapter = new SearchVehiclesAdapter(
+                new MockSearchVehiclesInputPort());
             searchVehiclesAdapter.searchVehicles(pickupDate, "pickup", returnDate, "return");
         });
     }
@@ -55,10 +58,12 @@ class SearchVehiclesAdapterTest {
     @Test
     public void test_searchVehicles_invalidInput_returnsBadRequest() {
         final ZonedDateTime pickupDate = ZonedDateTime.now();
-        final SearchVehiclesAdapter searchVehiclesAdapter = new SearchVehiclesAdapter(new MockSearchVehiclesInputPort());
+        final SearchVehiclesAdapter searchVehiclesAdapter = new SearchVehiclesAdapter(
+            new MockSearchVehiclesInputPort());
         final SearchVehiclesHttpResponse searchVehiclesHttpResponse = searchVehiclesAdapter
             .searchVehicles(pickupDate, "pickup", null, "return");
-        Assertions.assertEquals(HttpStatus.BAD_REQUEST, searchVehiclesHttpResponse.getHttpResponse().getStatus());
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST,
+            searchVehiclesHttpResponse.getHttpResponse().getStatus());
     }
 
     private static class MockSearchVehiclesInputPort implements SearchVehiclesInputPort {
@@ -75,7 +80,8 @@ class SearchVehiclesAdapterTest {
         private void setup() {
             createVhicleCategories();
             MockitoAnnotations.initMocks(this);
-            Mockito.when(searchVehiclesOutputData.getVehicleCategories()).thenReturn(vehicleCategories);
+            Mockito.when(searchVehiclesOutputData.getVehicleCategories())
+                .thenReturn(vehicleCategories);
         }
 
         private void createVhicleCategories() {
@@ -105,7 +111,8 @@ class SearchVehiclesAdapterTest {
         }
 
         @Override
-        public void searchVehicles(final SearchVehiclesInputData inputData, final SearchVehiclesOutputPort outputPort) {
+        public void searchVehicles(final SearchVehiclesInputData inputData,
+            final SearchVehiclesOutputPort outputPort) {
             outputPort.present(searchVehiclesOutputData);
         }
 

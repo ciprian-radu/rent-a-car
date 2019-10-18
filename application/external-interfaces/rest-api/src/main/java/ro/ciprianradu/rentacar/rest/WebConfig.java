@@ -18,10 +18,8 @@ public class WebConfig extends WebMvcConfigurationSupport {
     @Bean
     public MappingJackson2HttpMessageConverter customJackson2HttpMessageConverter() {
         MappingJackson2HttpMessageConverter jsonConverter = new MappingJackson2HttpMessageConverter();
-        ObjectMapper objectMapper = new ObjectMapper()
-            .registerModule(new ParameterNamesModule())
-            .registerModule(new Jdk8Module())
-            .registerModule(new JavaTimeModule())
+        ObjectMapper objectMapper = new ObjectMapper().registerModule(new ParameterNamesModule())
+            .registerModule(new Jdk8Module()).registerModule(new JavaTimeModule())
             .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         jsonConverter.setObjectMapper(objectMapper);
         return jsonConverter;

@@ -5,16 +5,24 @@ package ro.ciprianradu.rentacar.entity;
  */
 public class VehicleModel extends Entity {
 
-    /** the name of this model */
+    /**
+     * the name of this model
+     */
     private String name;
 
-    /** number of seats */
+    /**
+     * number of seats
+     */
     private int seats;
 
-    /** Air Conditioning (not available by default) */
+    /**
+     * Air Conditioning (not available by default)
+     */
     private boolean ac;
 
-    /** transmission can be manual (default) or automatic */
+    /**
+     * transmission can be manual (default) or automatic
+     */
     private boolean automaticTransmission;
 
     // We may have many more attributes here, like: fuel consumption, number of luggage, mileage.

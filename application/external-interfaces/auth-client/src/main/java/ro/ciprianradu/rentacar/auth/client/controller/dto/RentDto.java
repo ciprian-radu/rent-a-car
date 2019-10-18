@@ -105,15 +105,10 @@ public class RentDto {
 
     @Override
     public String toString() {
-        return "RentDto{" +
-            "renterEmail='" + renterEmail + '\'' +
-            ", vehicleType='" + vehicleType + '\'' +
-            ", vehicleBrand='" + vehicleBrand + '\'' +
-            ", vehicleModel='" + vehicleModel + '\'' +
-            ", pickupDate='" + pickupDate + '\'' +
-            ", pickupLocationName='" + pickupLocationName + '\'' +
-            ", returnDate='" + returnDate + '\'' +
-            ", returnLocationName='" + returnLocationName + '\'' +
-            '}';
+        return "RentDto{" + "renterEmail='" + renterEmail + '\'' + ", vehicleType='" + vehicleType
+            + '\'' + ", vehicleBrand='" + vehicleBrand + '\'' + ", vehicleModel='" + vehicleModel
+            + '\'' + ", pickupDate='" + pickupDate + '\'' + ", pickupLocationName='"
+            + pickupLocationName + '\'' + ", returnDate='" + returnDate + '\''
+            + ", returnLocationName='" + returnLocationName + '\'' + '}';
     }
 }

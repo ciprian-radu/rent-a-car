@@ -11,7 +11,8 @@ import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 
 /**
- * Configures the local H2 database. When the database is not yet created, set as environment variable <code>init-db</code> parameter to <code>true</code>.
+ * Configures the local H2 database. When the database is not yet created, set as environment
+ * variable <code>init-db</code> parameter to <code>true</code>.
  */
 @Configuration
 public class H2DatabaseConfiguration {

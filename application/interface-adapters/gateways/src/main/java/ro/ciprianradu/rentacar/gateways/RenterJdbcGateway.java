@@ -33,14 +33,16 @@ public class RenterJdbcGateway implements RenterGateway {
     @Override
     public Renter save(final Renter renter) {
         jdbcTemplate.update(
-            "INSERT INTO RENT_A_CAR.RENTER (FIRST_NAME, LAST_NAME, EMAIL, TELEPHONE_NUMBER) VALUES (?, ?, ?, ?)", renter.getFirstName(), renter.getLastName(),
-            renter.getEmail(), renter.getTelephoneNumber());
+            "INSERT INTO RENT_A_CAR.RENTER (FIRST_NAME, LAST_NAME, EMAIL, TELEPHONE_NUMBER) VALUES (?, ?, ?, ?)",
+            renter.getFirstName(), renter.getLastName(), renter.getEmail(),
+            renter.getTelephoneNumber());
         return renter;
     }
 
     @Override
     public Optional<Renter> findByEmail(final String email) {
-        final List<Renter> renters = jdbcTemplate.query("SELECT * FROM RENT_A_CAR.RENTER WHERE EMAIL = ?", mapper, new Object[]{email});
+        final List<Renter> renters = jdbcTemplate
+            .query("SELECT * FROM RENT_A_CAR.RENTER WHERE EMAIL = ?", mapper, new Object[]{email});
         return Optional.ofNullable(renters.isEmpty() ? null : renters.get(0));
     }
 

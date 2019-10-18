@@ -20,9 +20,10 @@ public class SearchVehiclesHttpResponse implements SearchVehiclesOutputPort {
 
     @Override
     public void present(final SearchVehiclesOutputData searchVehiclesOutputData) {
-        final Set<VehicleCategory> vehicleCategories = searchVehiclesOutputData.getVehicleCategories();
+        final Set<VehicleCategory> vehicleCategoriesSet = searchVehiclesOutputData
+            .getVehicleCategories();
         this.vehicleCategories.clear();
-        vehicleCategories.forEach(this::addVehicle);
+        vehicleCategoriesSet.forEach(this::addVehicle);
         httpResponse = new HttpResponse(HttpStatus.OK);
     }
 

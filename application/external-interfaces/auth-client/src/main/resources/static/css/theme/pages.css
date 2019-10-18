@@ -166,12 +166,14 @@
   .newsletter input {
     padding: 0 25px;
   }
+
   .newsletter .primary-btn {
     top: 120%;
     transform: translate(50%, 0);
     right: 50%;
     width: 185px;
   }
+
   .newsletter .info {
     top: 110px;
   }
@@ -210,7 +212,7 @@
   background: rgba(127, 127, 127, 0.5);
   margin-left: 5px;
   margin-right: 5px;
-  @inlcude transition();
+@inlcude transition();
 }
 
 .information-area .owl-dot.active {
@@ -252,6 +254,7 @@
     padding-left: 5%;
     padding-right: 5%;
   }
+
   .about-right h1 {
     font-size: 25px;
   }
@@ -261,6 +264,7 @@
   .about-right h1 {
     font-size: 20px;
   }
+
   .about-right p {
     font-size: 13px;
   }
@@ -389,6 +393,7 @@
     left: 0;
     top: 20px;
   }
+
   .testimonial-area .owl-controls .owl-prev, .testimonial-area .owl-controls .owl-next {
     display: inline-block;
   }

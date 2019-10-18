@@ -32,14 +32,15 @@ public class LocationJdbcGateway implements LocationGateway {
 
     @Override
     public Location save(final Location location) {
-        jdbcTemplate.update(
-            "INSERT INTO RENT_A_CAR.LOCATION (NAME, ADDRESS) VALUES (?, ?)", location.getName(), location.getAddress());
+        jdbcTemplate.update("INSERT INTO RENT_A_CAR.LOCATION (NAME, ADDRESS) VALUES (?, ?)",
+            location.getName(), location.getAddress());
         return location;
     }
 
     @Override
     public Optional<Location> findByName(final String name) {
-        final List<Location> locations = jdbcTemplate.query("SELECT * FROM RENT_A_CAR.LOCATION WHERE NAME = ?", mapper, new Object[]{name});
+        final List<Location> locations = jdbcTemplate
+            .query("SELECT * FROM RENT_A_CAR.LOCATION WHERE NAME = ?", mapper, new Object[]{name});
         return Optional.ofNullable(locations.isEmpty() ? null : locations.get(0));
     }
 

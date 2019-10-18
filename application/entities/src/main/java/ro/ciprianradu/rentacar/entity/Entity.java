@@ -4,12 +4,15 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * Entities encapsulate Enterprise wide business rules. An entity can be an object with methods, or it can be a set of data structures and functions. It does
- * not matter so long as the entities could be used by many different applications in the enterprise.
+ * Entities encapsulate Enterprise wide business rules. An entity can be an object with methods, or
+ * it can be a set of data structures and functions. It does not matter so long as the entities
+ * could be used by many different applications in the enterprise.
  */
 public class Entity {
 
-    /** This is the ID of this entity. May not be unique since entities can be copied. */
+    /**
+     * This is the ID of this entity. May not be unique since entities can be copied.
+     */
     private String id;
 
     /**
@@ -69,9 +72,7 @@ public class Entity {
 
     @Override
     public String toString() {
-        return "Entity{" +
-            "id=" + id +
-            '}';
+        return "Entity{" + "id=" + id + '}';
     }
 
 }

@@ -1,7 +1,10 @@
 package ro.ciprianradu.rentacar.usecases.searchvehicles;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import ro.ciprianradu.rentacar.entity.Vehicle;
 
 /**
@@ -89,11 +92,11 @@ public class SearchVehiclesOutputData {
                 return false;
             }
             final VehicleCategory vehicleCategory = (VehicleCategory) o;
-            return Objects.equals(getType(), vehicleCategory.getType()) &&
-                Objects.equals(getBrand(), vehicleCategory.getBrand()) &&
-                Objects.equals(getModel(), vehicleCategory.getModel()) &&
-                Objects.equals(getRate(), vehicleCategory.getRate()) &&
-                Objects.equals(getLocation(), vehicleCategory.getLocation());
+            return Objects.equals(getType(), vehicleCategory.getType()) && Objects
+                .equals(getBrand(), vehicleCategory.getBrand()) && Objects
+                .equals(getModel(), vehicleCategory.getModel()) && Objects
+                .equals(getRate(), vehicleCategory.getRate()) && Objects
+                .equals(getLocation(), vehicleCategory.getLocation());
         }
 
         @Override

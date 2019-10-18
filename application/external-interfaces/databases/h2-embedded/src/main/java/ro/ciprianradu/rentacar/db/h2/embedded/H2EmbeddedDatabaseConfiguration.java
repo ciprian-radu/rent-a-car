@@ -14,12 +14,9 @@ public class H2EmbeddedDatabaseConfiguration {
 
     @Bean
     public JdbcTemplate createJdbcTemplate() {
-        final JdbcTemplate jdbcTemplate = new JdbcTemplate(new EmbeddedDatabaseBuilder()
-            .setType(EmbeddedDatabaseType.H2)
-            .addScript("classpath:db/h2/schema.sql")
-            .addScript("classpath:db/h2/init-data.sql").build());
-
-        return jdbcTemplate;
+        return new JdbcTemplate(new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2)
+            .addScript("classpath:db/h2/schema.sql").addScript("classpath:db/h2/init-data.sql")
+            .build());
     }
 
 }

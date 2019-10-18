@@ -26,13 +26,14 @@ class RentVehicleController {
     }
 
     @PostMapping(value = ENDPOINT)
-    public ResponseEntity<?> rentVehicle(@RequestBody Reservation reservation) {
+    public ResponseEntity rentVehicle(@RequestBody Reservation reservation) {
         ResponseEntity responseEntity;
         final HttpResponse httpResponse = adapter.rentVehicle(reservation);
         switch (httpResponse.getStatus()) {
             case CREATED:
                 reservation.setId(adapter.getRentId());
-                responseEntity = ResponseEntity.created(URI.create(ENDPOINT + "/" + reservation.getId())).body(reservation);
+                responseEntity = ResponseEntity
+                    .created(URI.create(ENDPOINT + "/" + reservation.getId())).body(reservation);
                 break;
             case CONFLICT:
                 responseEntity = ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -41,7 +42,8 @@ class RentVehicleController {
                 responseEntity = ResponseEntity.badRequest().body(httpResponse);
                 break;
             default:
-                responseEntity = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(httpResponse);
+                responseEntity = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(httpResponse);
         }
 
         return responseEntity;

@@ -32,14 +32,15 @@ public class VehicleTypeJdbcGateway implements VehicleTypeGateway {
 
     @Override
     public VehicleType save(final VehicleType vehicleType) {
-        jdbcTemplate.update(
-            "INSERT INTO RENT_A_CAR.VEHICLE_TYPE (TYPE) VALUES (?)", vehicleType.getType());
+        jdbcTemplate
+            .update("INSERT INTO RENT_A_CAR.VEHICLE_TYPE (TYPE) VALUES (?)", vehicleType.getType());
         return vehicleType;
     }
 
     @Override
     public Optional<VehicleType> findByType(final String type) {
-        final List<VehicleType> vehicleTypes = jdbcTemplate.query("SELECT * FROM RENT_A_CAR.VEHICLE_TYPE WHERE TYPE = ?", mapper, new Object[]{type});
+        final List<VehicleType> vehicleTypes = jdbcTemplate
+            .query("SELECT * FROM RENT_A_CAR.VEHICLE_TYPE WHERE TYPE = ?", mapper, type);
         return Optional.ofNullable(vehicleTypes.isEmpty() ? null : vehicleTypes.get(0));
     }
 

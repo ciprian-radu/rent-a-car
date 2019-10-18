@@ -4,5 +4,5 @@ server:
   port: 7081
 
 logging:
-    level:
-      org.springframework.security: DEBUG
+  level:
+    org.springframework.security: DEBUG

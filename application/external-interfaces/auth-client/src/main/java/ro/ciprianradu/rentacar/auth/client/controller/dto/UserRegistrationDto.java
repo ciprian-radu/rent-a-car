@@ -6,8 +6,7 @@ import ro.ciprianradu.rentacar.auth.client.constraint.FieldMatch;
 import ro.ciprianradu.rentacar.auth.client.constraint.FieldMatch.List;
 
 @List({
-    @FieldMatch(first = "password", second = "confirmPassword", message = "The password fields must match")
-})
+    @FieldMatch(first = "password", second = "confirmPassword", message = "The password fields must match")})
 public class UserRegistrationDto {
 
     @NotEmpty

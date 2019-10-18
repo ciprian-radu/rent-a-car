@@ -1,10 +1,12 @@
 package ro.ciprianradu.rentacar.rest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import ro.ciprianradu.rentacar.usecases.gateways.GatewaysAccessor;
 import ro.ciprianradu.rentacar.usecases.registerlocation.RegisterLocationInputPort;
 import ro.ciprianradu.rentacar.usecases.registerlocation.RegisterLocationUseCase;
 import ro.ciprianradu.rentacar.usecases.registerrenter.RegisterRenterInputPort;
@@ -25,34 +27,37 @@ import ro.ciprianradu.rentacar.usecases.searchvehicles.SearchVehiclesUseCase;
 //@EnableWebMvc
 class RestApiConfiguration {
 
+    @Autowired
+    private GatewaysAccessor gatewaysAccessor;
+
     @Bean
     public RegisterRenterInputPort configureRegisterRenterInputPort() {
-        return new RegisterRenterUseCase();
+        return new RegisterRenterUseCase(gatewaysAccessor);
     }
 
     @Bean
     public RegisterLocationInputPort configureRegisterLocationInputPort() {
-        return new RegisterLocationUseCase();
+        return new RegisterLocationUseCase(gatewaysAccessor);
     }
 
     @Bean
     public RetrieveLocationsInputPort configureRetrieveLocationsInputPort() {
-        return new RetrieveLocationsUseCase();
+        return new RetrieveLocationsUseCase(gatewaysAccessor);
     }
 
     @Bean
     public RegisterVehicleInputPort configureRegisterVehicleInputPort() {
-        return new RegisterVehicleUseCase();
+        return new RegisterVehicleUseCase(gatewaysAccessor);
     }
 
     @Bean
     public RentVehicleInputPort configureRentVehicleInputPort() {
-        return new RentVehicleUseCase();
+        return new RentVehicleUseCase(gatewaysAccessor);
     }
 
     @Bean
     public SearchVehiclesInputPort configureSearchVehiclesInputPort() {
-        return new SearchVehiclesUseCase();
+        return new SearchVehiclesUseCase(gatewaysAccessor);
     }
 
     @Bean

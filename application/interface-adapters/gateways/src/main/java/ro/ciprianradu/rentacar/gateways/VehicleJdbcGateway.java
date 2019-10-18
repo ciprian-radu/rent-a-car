@@ -36,7 +36,8 @@ public class VehicleJdbcGateway implements VehicleGateway {
     }
 
     /**
-     * Saves a given vehicle. Note that the vehicle type, brand and model must already exist in the database.
+     * Saves a given vehicle. Note that the vehicle type, brand and model must already exist in the
+     * database.
      *
      * @param vehicle the vehicle to save (assumed not <code>null</code>)
      * @return the saved vehicle
@@ -44,27 +45,27 @@ public class VehicleJdbcGateway implements VehicleGateway {
     @Override
     public Vehicle save(final Vehicle vehicle) {
         jdbcTemplate.update(
-            "INSERT INTO RENT_A_CAR.VEHICLE (ID, TYPE, BRAND, MODEL, RATE, LOCATION) VALUES (?, ?, ?, ?, ?, ?)", vehicle.getId(), vehicle.getType().getType(),
-            vehicle.getBrand().getName(), vehicle.getModel().getName(), vehicle.getRate(), vehicle.getLocation());
+            "INSERT INTO RENT_A_CAR.VEHICLE (ID, TYPE, BRAND, MODEL, RATE, LOCATION) VALUES (?, ?, ?, ?, ?, ?)",
+            vehicle.getId(), vehicle.getType().getType(), vehicle.getBrand().getName(),
+            vehicle.getModel().getName(), vehicle.getRate(), vehicle.getLocation());
         return vehicle;
     }
 
     @Override
     public Optional<Vehicle> findById(final String id) {
-        final List<Vehicle> vehicles = jdbcTemplate
-            .query("SELECT * FROM RENT_A_CAR.VEHICLE V "
-                + "JOIN RENT_A_CAR.VEHICLE_TYPE VT ON V.TYPE = VT.TYPE "
-                + "JOIN RENT_A_CAR.VEHICLE_BRAND VB ON V.BRAND = VB.NAME "
-                + "JOIN RENT_A_CAR.VEHICLE_MODEL VM ON V.MODEL = VM.NAME "
-                + "JOIN RENT_A_CAR.LOCATION L ON V.LOCATION = L.NAME "
-                + "WHERE ID = ?", mapper, new Object[]{id});
+        final List<Vehicle> vehicles = jdbcTemplate.query("SELECT * FROM RENT_A_CAR.VEHICLE V "
+            + "JOIN RENT_A_CAR.VEHICLE_TYPE VT ON V.TYPE = VT.TYPE "
+            + "JOIN RENT_A_CAR.VEHICLE_BRAND VB ON V.BRAND = VB.NAME "
+            + "JOIN RENT_A_CAR.VEHICLE_MODEL VM ON V.MODEL = VM.NAME "
+            + "JOIN RENT_A_CAR.LOCATION L ON V.LOCATION = L.NAME " + "WHERE ID = ?", mapper, id);
         return Optional.ofNullable(vehicles.isEmpty() ? null : vehicles.get(0));
     }
 
     @Override
-    public List<Vehicle> search(final String type, final String brand, final String model, final BigDecimal maximumRate) {
+    public List<Vehicle> search(final String type, final String brand, final String model,
+        final BigDecimal maximumRate) {
         final List<Object> searchParameters = new ArrayList<>();
-        String whereClause = new String();
+        String whereClause = "";
         if (type != null && !type.isEmpty()) {
             searchParameters.add(type);
             whereClause = addToWhereClause(whereClause, "V.TYPE");
@@ -87,14 +88,12 @@ public class VehicleJdbcGateway implements VehicleGateway {
         if (!whereClause.isEmpty()) {
             whereClause = "WHERE " + whereClause;
         }
-        final List<Vehicle> vehicles = jdbcTemplate
-            .query("SELECT * FROM RENT_A_CAR.VEHICLE V "
+        return jdbcTemplate.query("SELECT * FROM RENT_A_CAR.VEHICLE V "
                 + "JOIN RENT_A_CAR.VEHICLE_TYPE VT ON V.TYPE = VT.TYPE "
                 + "JOIN RENT_A_CAR.VEHICLE_BRAND VB ON V.BRAND = VB.NAME "
                 + "JOIN RENT_A_CAR.VEHICLE_MODEL VM ON V.MODEL = VM.NAME "
-                + "JOIN RENT_A_CAR.LOCATION L ON V.LOCATION = L.NAME "
-                + whereClause, mapper, searchParameters.toArray());
-        return vehicles;
+                + "JOIN RENT_A_CAR.LOCATION L ON V.LOCATION = L.NAME " + whereClause, mapper,
+            searchParameters.toArray());
     }
 
     private String addToWhereClause(String whereClause, String parameter) {
@@ -126,13 +125,15 @@ public class VehicleJdbcGateway implements VehicleGateway {
             vehicle.setType(vehicleType);
         }
 
-        private void mapVehicleBrand(final ResultSet rs, final Vehicle vehicle) throws SQLException {
+        private void mapVehicleBrand(final ResultSet rs, final Vehicle vehicle)
+            throws SQLException {
             final VehicleBrand vehicleBrand = new VehicleBrand();
             vehicleBrand.setName(rs.getString("BRAND"));
             vehicle.setBrand(vehicleBrand);
         }
 
-        private void mapVehicleModel(final ResultSet rs, final Vehicle vehicle) throws SQLException {
+        private void mapVehicleModel(final ResultSet rs, final Vehicle vehicle)
+            throws SQLException {
             final VehicleModel vehicleModel = new VehicleModel();
             vehicleModel.setName(rs.getString("MODEL"));
             vehicleModel.setAc(rs.getBoolean("AC"));

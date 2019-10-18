@@ -8,7 +8,8 @@ import ro.ciprianradu.rentacar.entity.VehicleType;
 /**
  *
  */
-public class InMemoryVehicleTypeGateway extends EntityGateway<VehicleType> implements VehicleTypeGateway {
+public class InMemoryVehicleTypeGateway extends EntityGateway<VehicleType> implements
+    VehicleTypeGateway {
 
     @Override
     public Optional<VehicleType> findByType(final String type) {

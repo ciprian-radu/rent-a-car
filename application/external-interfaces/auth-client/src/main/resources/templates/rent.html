@@ -1,101 +1,110 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <!-- Mobile Specific Meta -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Favicon-->
-    <link rel="shortcut icon" href="img/fav.png">
-    <!-- Author Meta -->
-    <meta name="author" content="codepixer">
-    <!-- Meta Description -->
-    <meta name="description" content="">
-    <!-- Meta Keyword -->
-    <meta name="keywords" content="">
-    <!-- meta character set -->
-    <meta charset="UTF-8">
-    <!-- Site Title -->
-    <title>Car Rentals</title>
+  <!-- Mobile Specific Meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Favicon-->
+  <link rel="shortcut icon" href="img/fav.png">
+  <!-- Author Meta -->
+  <meta name="author" content="codepixer">
+  <!-- Meta Description -->
+  <meta name="description" content="">
+  <!-- Meta Keyword -->
+  <meta name="keywords" content="">
+  <!-- meta character set -->
+  <meta charset="UTF-8">
+  <!-- Site Title -->
+  <title>Car Rentals</title>
 
-    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
-    <!--
-    CSS
-    ============================================= -->
-    <link rel="stylesheet" href="css/linearicons.css">
-    <link rel="stylesheet" href="css/font-awesome.min.css">
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/magnific-popup.css">
-    <link rel="stylesheet" href="css/nice-select.css">
-    <link rel="stylesheet" href="css/animate.min.css">
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="css/owl.carousel.css">
-    <link rel="stylesheet" href="css/main.css">
+  <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700"
+        rel="stylesheet">
+  <!--
+  CSS
+  ============================================= -->
+  <link rel="stylesheet" href="css/linearicons.css">
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="css/magnific-popup.css">
+  <link rel="stylesheet" href="css/nice-select.css">
+  <link rel="stylesheet" href="css/animate.min.css">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="css/owl.carousel.css">
+  <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
 
 <header id="header">
-    <div class="container">
-        <div class="row align-items-center justify-content-between d-flex">
-            <div id="logo">
-                <a href="index.html"><img src="img/logo.png" alt="" title=""/></a>
-            </div>
-            <nav id="nav-menu-container">
-                <ul class="nav-menu">
-                    <li class="menu-active"><a href="index.html">Home</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="cars.html">Cars</a></li>
-                    <li><a href="service.html">Service</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                    <li><a th:href="@{/logout}"><span th:if="${#authorization.expression('isAuthenticated()')}">Log out</span></a></li>
-                </ul>
-            </nav><!-- #nav-menu-container -->
-        </div>
-        <div sec:authorize="isAuthenticated()">
-            <div class="text-right">
-                Welcome <span sec:authentication="name"></span>
-            </div>
-        </div>
+  <div class="container">
+    <div class="row align-items-center justify-content-between d-flex">
+      <div id="logo">
+        <a href="index.html"><img src="img/logo.png" alt="" title=""/></a>
+      </div>
+      <nav id="nav-menu-container">
+        <ul class="nav-menu">
+          <li class="menu-active"><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="cars.html">Cars</a></li>
+          <li><a href="service.html">Service</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a th:href="@{/logout}"><span
+              th:if="${#authorization.expression('isAuthenticated()')}">Log out</span></a></li>
+        </ul>
+      </nav><!-- #nav-menu-container -->
     </div>
+    <div sec:authorize="isAuthenticated()">
+      <div class="text-right">
+        Welcome <span sec:authentication="name"></span>
+      </div>
+    </div>
+  </div>
 </header><!-- #header -->
 
 <section class="banner-area relative" id="home">
-    <div class="overlay overlay-bg"></div>
-    <div class="container">
-        <div class="row fullscreen d-flex justify-content-center">
-            <div class="col-md-6 mt-70">
-                <div sec:authorize="isAuthenticated()">
-                    <div th:if="${rentStatus == null}">
-                        <div class="text-center text-md-left" sec:authorize="isAuthenticated()">
-                            <a href="/search.html" class="d-inline-block primary-btn text-uppercase">Search Cars</a>
-                        </div>
-                    </div>
-                    <div th:if="${rentStatus != null}">
-                        <div th:if="${rentStatus.status}">
-                            <div class="col-md-12 header-right">
-                                <h4 class="text-white pb-30">You rented the vehicle <span th:text="${rentStatus.rentDto.vehicleBrand}"></span> <span
-                                    th:text="${rentStatus.rentDto.vehicleModel}"></span> between <span th:text="${rentStatus.rentDto.pickupDate}"></span> and
-                                    <span th:text="${rentStatus.rentDto.returnDate}"></span>!</h4>
-                                <h4 class="text-white pb-30">You may pick it up from location <span th:text="${rentStatus.rentDto.pickupLocationName}"></span>.
-                                </h4>
-                                <h4 class="text-white pb-30">You must return the vehicle at location <span
-                                    th:text="${rentStatus.rentDto.returnLocationName}"></span>.</h4>
-                            </div>
-                        </div>
-                        <div th:if="${!rentStatus.status}">
-                            <div class="col-lg-5 col-md-6 header-right">
-                                <h4 class="text-red pb-30">Your rent request cannot be fulfilled at the moment. Please try again later!</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+  <div class="overlay overlay-bg"></div>
+  <div class="container">
+    <div class="row fullscreen d-flex justify-content-center">
+      <div class="col-md-6 mt-70">
+        <div sec:authorize="isAuthenticated()">
+          <div th:if="${rentStatus == null}">
+            <div class="text-center text-md-left" sec:authorize="isAuthenticated()">
+              <a href="/search.html" class="d-inline-block primary-btn text-uppercase">Search
+                Cars</a>
             </div>
+          </div>
+          <div th:if="${rentStatus != null}">
+            <div th:if="${rentStatus.status}">
+              <div class="col-md-12 header-right">
+                <h4 class="text-white pb-30">You rented the vehicle <span
+                    th:text="${rentStatus.rentDto.vehicleBrand}"></span> <span
+                    th:text="${rentStatus.rentDto.vehicleModel}"></span> between <span
+                    th:text="${rentStatus.rentDto.pickupDate}"></span> and
+                  <span th:text="${rentStatus.rentDto.returnDate}"></span>!</h4>
+                <h4 class="text-white pb-30">You may pick it up from location <span
+                    th:text="${rentStatus.rentDto.pickupLocationName}"></span>.
+                </h4>
+                <h4 class="text-white pb-30">You must return the vehicle at location <span
+                    th:text="${rentStatus.rentDto.returnLocationName}"></span>.</h4>
+              </div>
+            </div>
+            <div th:if="${!rentStatus.status}">
+              <div class="col-lg-5 col-md-6 header-right">
+                <h4 class="text-red pb-30">Your rent request cannot be fulfilled at the moment.
+                  Please try again later!</h4>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </section>
 <!-- End banner Area -->
 
 <script src="js/vendor/jquery-2.2.4.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
 <script src="js/vendor/bootstrap.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="js/easing.min.js"></script>

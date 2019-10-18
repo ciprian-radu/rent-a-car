@@ -9,7 +9,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import ro.ciprianradu.rentacar.auth.client.controller.dto.*;
+import ro.ciprianradu.rentacar.auth.client.controller.dto.LocationDto;
+import ro.ciprianradu.rentacar.auth.client.controller.dto.RentDto;
+import ro.ciprianradu.rentacar.auth.client.controller.dto.SearchDto;
+import ro.ciprianradu.rentacar.auth.client.controller.dto.UserRegistrationDto;
+import ro.ciprianradu.rentacar.auth.client.controller.dto.VehicleCategoryDto;
 import ro.ciprianradu.rentacar.auth.client.service.RestApiService;
 
 @Controller
@@ -95,7 +99,8 @@ public class MainController {
     }
 
     @GetMapping("/search-results.html")
-    public String searchResults(@ModelAttribute("rent") RentDto rent, @ModelAttribute("vehicles") @Valid List<VehicleCategoryDto> vehicles, Model model) {
+    public String searchResults(@ModelAttribute("rent") RentDto rent,
+        @ModelAttribute("vehicles") @Valid List<VehicleCategoryDto> vehicles, Model model) {
         // "rent" is available on the HTTP Session.
         // "vehicles" is available on the HTTP Session.
         return "search-results.html";

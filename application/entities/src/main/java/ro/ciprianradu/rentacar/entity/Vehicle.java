@@ -13,10 +13,14 @@ public class Vehicle extends Entity {
 
     private VehicleModel model;
 
-    /** the name of the location to which this vehicle is associated to */
+    /**
+     * the name of the location to which this vehicle is associated to
+     */
     private String location;
 
-    /** how much it costs (in EURO) to reserve this vehicle for one day */
+    /**
+     * how much it costs (in EURO) to reserve this vehicle for one day
+     */
     private BigDecimal rate;
 
     public Vehicle(final String id) {

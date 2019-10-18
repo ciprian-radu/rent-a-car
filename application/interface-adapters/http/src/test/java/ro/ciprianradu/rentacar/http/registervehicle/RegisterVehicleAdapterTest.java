@@ -27,20 +27,23 @@ class RegisterVehicleAdapterTest {
 
     @Test
     public void test_RegisterVehicleAdapter_instantiates() {
-        final RegisterVehicleAdapter registerVehicleAdapter = new RegisterVehicleAdapter(new RegisterVehicleAdapterTest.MockRegisterVehicleInputPort());
+        final RegisterVehicleAdapter registerVehicleAdapter = new RegisterVehicleAdapter(
+            new RegisterVehicleAdapterTest.MockRegisterVehicleInputPort());
         Assertions.assertNotNull(registerVehicleAdapter);
     }
 
     @Test
     public void test_registerVehicle_nullVehicle_returnsBadRequest() {
-        final RegisterVehicleAdapter registerVehicleAdapter = new RegisterVehicleAdapter(new RegisterVehicleAdapterTest.MockRegisterVehicleInputPort());
+        final RegisterVehicleAdapter registerVehicleAdapter = new RegisterVehicleAdapter(
+            new RegisterVehicleAdapterTest.MockRegisterVehicleInputPort());
         final HttpResponse httpResponse = registerVehicleAdapter.registerVehicle(null);
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, httpResponse.getStatus());
     }
 
     @Test
     public void test_registerVehicle_nullId_returnsBadRequest() {
-        final RegisterVehicleAdapter registerVehicleAdapter = new RegisterVehicleAdapter(new RegisterVehicleAdapterTest.MockRegisterVehicleInputPort());
+        final RegisterVehicleAdapter registerVehicleAdapter = new RegisterVehicleAdapter(
+            new RegisterVehicleAdapterTest.MockRegisterVehicleInputPort());
         final Vehicle vehicle = new Vehicle();
         vehicle.setId(null);
         vehicle.setType("type");
@@ -54,7 +57,8 @@ class RegisterVehicleAdapterTest {
 
     @Test
     public void test_registerVehicle_idWithWhitespace_returnsBadRequest() {
-        final RegisterVehicleAdapter registerVehicleAdapter = new RegisterVehicleAdapter(new RegisterVehicleAdapterTest.MockRegisterVehicleInputPort());
+        final RegisterVehicleAdapter registerVehicleAdapter = new RegisterVehicleAdapter(
+            new RegisterVehicleAdapterTest.MockRegisterVehicleInputPort());
         final Vehicle vehicle = new Vehicle();
         vehicle.setId("a whitespace");
         vehicle.setType("type");
@@ -68,7 +72,8 @@ class RegisterVehicleAdapterTest {
 
     @Test
     public void test_registerVehicle_nullType_returnsBadRequest() {
-        final RegisterVehicleAdapter registerVehicleAdapter = new RegisterVehicleAdapter(new RegisterVehicleAdapterTest.MockRegisterVehicleInputPort());
+        final RegisterVehicleAdapter registerVehicleAdapter = new RegisterVehicleAdapter(
+            new RegisterVehicleAdapterTest.MockRegisterVehicleInputPort());
         final Vehicle vehicle = new Vehicle();
         vehicle.setId("id");
         vehicle.setType(null);
@@ -82,7 +87,8 @@ class RegisterVehicleAdapterTest {
 
     @Test
     public void test_registerVehicle_nullBrand_returnsBadRequest() {
-        final RegisterVehicleAdapter registerVehicleAdapter = new RegisterVehicleAdapter(new RegisterVehicleAdapterTest.MockRegisterVehicleInputPort());
+        final RegisterVehicleAdapter registerVehicleAdapter = new RegisterVehicleAdapter(
+            new RegisterVehicleAdapterTest.MockRegisterVehicleInputPort());
         final Vehicle vehicle = new Vehicle();
         vehicle.setId("id");
         vehicle.setType("type");
@@ -96,7 +102,8 @@ class RegisterVehicleAdapterTest {
 
     @Test
     public void test_registerVehicle_nullModel_returnsBadRequest() {
-        final RegisterVehicleAdapter registerVehicleAdapter = new RegisterVehicleAdapter(new RegisterVehicleAdapterTest.MockRegisterVehicleInputPort());
+        final RegisterVehicleAdapter registerVehicleAdapter = new RegisterVehicleAdapter(
+            new RegisterVehicleAdapterTest.MockRegisterVehicleInputPort());
         final Vehicle vehicle = new Vehicle();
         vehicle.setId("id");
         vehicle.setType("type");
@@ -110,7 +117,8 @@ class RegisterVehicleAdapterTest {
 
     @Test
     public void test_registerVehicle_zeroRate_returnsBadRequest() {
-        final RegisterVehicleAdapter registerVehicleAdapter = new RegisterVehicleAdapter(new RegisterVehicleAdapterTest.MockRegisterVehicleInputPort());
+        final RegisterVehicleAdapter registerVehicleAdapter = new RegisterVehicleAdapter(
+            new RegisterVehicleAdapterTest.MockRegisterVehicleInputPort());
         final Vehicle vehicle = new Vehicle();
         vehicle.setId("id");
         vehicle.setType("type");
@@ -124,7 +132,8 @@ class RegisterVehicleAdapterTest {
 
     @Test
     public void test_registerVehicle_negativeRate_returnsBadRequest() {
-        final RegisterVehicleAdapter registerVehicleAdapter = new RegisterVehicleAdapter(new RegisterVehicleAdapterTest.MockRegisterVehicleInputPort());
+        final RegisterVehicleAdapter registerVehicleAdapter = new RegisterVehicleAdapter(
+            new RegisterVehicleAdapterTest.MockRegisterVehicleInputPort());
         final Vehicle vehicle = new Vehicle();
         vehicle.setId("id");
         vehicle.setType("type");
@@ -138,7 +147,8 @@ class RegisterVehicleAdapterTest {
 
     @Test
     public void test_registerVehicle_nullLocation_returnsBadRequest() {
-        final RegisterVehicleAdapter registerVehicleAdapter = new RegisterVehicleAdapter(new RegisterVehicleAdapterTest.MockRegisterVehicleInputPort());
+        final RegisterVehicleAdapter registerVehicleAdapter = new RegisterVehicleAdapter(
+            new RegisterVehicleAdapterTest.MockRegisterVehicleInputPort());
         final Vehicle vehicle = new Vehicle();
         vehicle.setId("id");
         vehicle.setType("type");
@@ -152,7 +162,8 @@ class RegisterVehicleAdapterTest {
 
     @Test
     public void test_registerVehicle_locationWithWhitespace_returnsBadRequest() {
-        final RegisterVehicleAdapter registerVehicleAdapter = new RegisterVehicleAdapter(new RegisterVehicleAdapterTest.MockRegisterVehicleInputPort());
+        final RegisterVehicleAdapter registerVehicleAdapter = new RegisterVehicleAdapter(
+            new RegisterVehicleAdapterTest.MockRegisterVehicleInputPort());
         final Vehicle vehicle = new Vehicle();
         vehicle.setId("id");
         vehicle.setType("type");
@@ -166,7 +177,8 @@ class RegisterVehicleAdapterTest {
 
     @Test
     public void test_registerVehicle_returnsCreated() {
-        final RegisterVehicleAdapter registerVehicleAdapter = new RegisterVehicleAdapter(new RegisterVehicleAdapterTest.MockRegisterVehicleInputPort());
+        final RegisterVehicleAdapter registerVehicleAdapter = new RegisterVehicleAdapter(
+            new RegisterVehicleAdapterTest.MockRegisterVehicleInputPort());
         final Vehicle vehicle = new Vehicle();
         vehicle.setId("id");
         vehicle.setType("type");
@@ -180,7 +192,8 @@ class RegisterVehicleAdapterTest {
 
     @Test
     public void test_registerVehicle_sameVehicle_returnsConflict() {
-        final RegisterVehicleAdapter registerVehicleAdapter = new RegisterVehicleAdapter(new RegisterVehicleAdapterTest.MockRegisterVehicleInputPort());
+        final RegisterVehicleAdapter registerVehicleAdapter = new RegisterVehicleAdapter(
+            new RegisterVehicleAdapterTest.MockRegisterVehicleInputPort());
         final Vehicle vehicle = new Vehicle();
         vehicle.setId("id");
         vehicle.setType("type");
@@ -199,7 +212,8 @@ class RegisterVehicleAdapterTest {
         private List<String> registeredVehicles = new ArrayList<>();
 
         @Override
-        public void registerVehicle(final RegisterVehicleInputData inputData, final RegisterVehicleOutputPort outputPort) {
+        public void registerVehicle(final RegisterVehicleInputData inputData,
+            final RegisterVehicleOutputPort outputPort) {
             boolean registered;
             if (registeredVehicles.contains(inputData.getId())) {
                 registered = false;
@@ -211,5 +225,5 @@ class RegisterVehicleAdapterTest {
         }
 
     }
-    
+
 }

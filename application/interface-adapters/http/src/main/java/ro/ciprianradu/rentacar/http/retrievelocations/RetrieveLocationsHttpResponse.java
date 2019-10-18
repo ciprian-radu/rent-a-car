@@ -20,9 +20,10 @@ public class RetrieveLocationsHttpResponse implements RetrieveLocationsOutputPor
 
     @Override
     public void present(final RetrieveLocationsOutputData retrieveLocationsOutputData) {
-        final List<RetrieveLocationsOutputData.Location> locations = retrieveLocationsOutputData.getLocations();
+        final List<RetrieveLocationsOutputData.Location> locationsList = retrieveLocationsOutputData
+            .getLocations();
         this.locations.clear();
-        locations.forEach(this::addLocation);
+        locationsList.forEach(this::addLocation);
         httpResponse = new HttpResponse(HttpStatus.OK);
     }
 

@@ -26,12 +26,13 @@ class RegisterRenterController {
     }
 
     @PostMapping(value = ENDPOINT)
-    public ResponseEntity<?> registerRenter(@RequestBody Renter renter) {
+    public ResponseEntity registerRenter(@RequestBody Renter renter) {
         ResponseEntity responseEntity;
         final HttpResponse httpResponse = adapter.registerRenter(renter);
         switch (httpResponse.getStatus()) {
             case CREATED:
-                responseEntity = ResponseEntity.created(URI.create(ENDPOINT + "/" + renter.getEmail())).body(renter);
+                responseEntity = ResponseEntity
+                    .created(URI.create(ENDPOINT + "/" + renter.getEmail())).body(renter);
                 break;
             case CONFLICT:
                 responseEntity = ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -40,7 +41,8 @@ class RegisterRenterController {
                 responseEntity = ResponseEntity.badRequest().body(httpResponse);
                 break;
             default:
-                responseEntity = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(httpResponse);
+                responseEntity = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(httpResponse);
         }
 
         return responseEntity;

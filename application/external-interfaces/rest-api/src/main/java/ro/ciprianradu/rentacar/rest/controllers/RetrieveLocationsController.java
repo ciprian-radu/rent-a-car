@@ -24,9 +24,9 @@ class RetrieveLocationsController {
     }
 
     @GetMapping(value = ENDPOINT)
-    public ResponseEntity<?> retrieveLocations() {
-        ResponseEntity responseEntity;
-        final RetrieveLocationsHttpResponse retrieveLocationsHttpResponse = adapter.retrieveLocations();
+    public ResponseEntity retrieveLocations() {
+        final RetrieveLocationsHttpResponse retrieveLocationsHttpResponse = adapter
+            .retrieveLocations();
         final List<Location> locations = retrieveLocationsHttpResponse.getLocations();
 
         return ResponseEntity.ok(locations);

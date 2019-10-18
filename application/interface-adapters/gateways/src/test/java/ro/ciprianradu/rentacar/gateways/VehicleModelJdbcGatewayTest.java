@@ -2,10 +2,8 @@ package ro.ciprianradu.rentacar.gateways;
 
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.dao.DuplicateKeyException;
-import ro.ciprianradu.rentacar.usecases.Context;
 import ro.ciprianradu.rentacar.entity.VehicleModel;
 import ro.ciprianradu.rentacar.usecases.gateways.VehicleModelGateway;
 
@@ -14,23 +12,22 @@ import ro.ciprianradu.rentacar.usecases.gateways.VehicleModelGateway;
  */
 class VehicleModelJdbcGatewayTest {
 
-    @BeforeEach
-    void setup() {
-        final VehicleModelGateway vehicleModelGateway = new VehicleModelJdbcGateway(JdbcTemplateFactory.createJdbcTemplate());
-        Context.vehicleModelGateway = vehicleModelGateway;
-    }
+    private VehicleModelGateway vehicleModelGateway = new VehicleModelJdbcGateway(
+        JdbcTemplateFactory.createJdbcTemplate());
 
     @Test
     void test_save_duplicateName_doesNotSave() {
         final VehicleModel vehicleModel = new VehicleModel();
         vehicleModel.setName("model");
-        Context.vehicleModelGateway.save(vehicleModel);
-        Assertions.assertThrows(DuplicateKeyException.class, () -> Context.vehicleModelGateway.save(vehicleModel));
+        vehicleModelGateway.save(vehicleModel);
+        Assertions.assertThrows(DuplicateKeyException.class,
+            () -> vehicleModelGateway.save(vehicleModel));
     }
 
     @Test
     void test_findByModel_missingName_empty() {
-        final Optional<VehicleModel> vehicleModelOptional = Context.vehicleModelGateway.findByModel("model");
+        final Optional<VehicleModel> vehicleModelOptional = vehicleModelGateway
+            .findByModel("model");
         Assertions.assertFalse(vehicleModelOptional.isPresent());
     }
 
@@ -38,8 +35,9 @@ class VehicleModelJdbcGatewayTest {
     void test_findByModel_name_returnsVehicleModel() {
         final VehicleModel vehicleModel = new VehicleModel();
         vehicleModel.setName("model");
-        Context.vehicleModelGateway.save(vehicleModel);
-        final Optional<VehicleModel> vehicleModelOptional = Context.vehicleModelGateway.findByModel("model");
+        vehicleModelGateway.save(vehicleModel);
+        final Optional<VehicleModel> vehicleModelOptional = vehicleModelGateway
+            .findByModel("model");
         Assertions.assertTrue(vehicleModelOptional.isPresent());
     }
 

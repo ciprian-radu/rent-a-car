@@ -2,10 +2,8 @@ package ro.ciprianradu.rentacar.gateways;
 
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.dao.DuplicateKeyException;
-import ro.ciprianradu.rentacar.usecases.Context;
 import ro.ciprianradu.rentacar.entity.Renter;
 import ro.ciprianradu.rentacar.usecases.gateways.RenterGateway;
 
@@ -14,11 +12,8 @@ import ro.ciprianradu.rentacar.usecases.gateways.RenterGateway;
  */
 class RenterJdbcGatewayTest {
 
-    @BeforeEach
-    void setup() {
-        final RenterJdbcGateway renterGateway = new RenterJdbcGateway(JdbcTemplateFactory.createJdbcTemplate());
-        Context.renterGateway = renterGateway;
-    }
+    private RenterJdbcGateway renterGateway = new RenterJdbcGateway(
+        JdbcTemplateFactory.createJdbcTemplate());
 
     @Test
     void test_save_noTelephoneNumber_saves() {
@@ -26,7 +21,8 @@ class RenterJdbcGatewayTest {
         renter.setFirstName("John");
         renter.setLastName("Doe");
         renter.setEmail("john.doe@email.com");
-        Context.renterGateway.save(renter);
+        renterGateway.save(renter);
+        Assertions.assertNotNull(renter);
     }
 
     @Test
@@ -35,13 +31,13 @@ class RenterJdbcGatewayTest {
         renter.setFirstName("John");
         renter.setLastName("Doe");
         renter.setEmail("john.doe@email.com");
-        Context.renterGateway.save(renter);
-        Assertions.assertThrows(DuplicateKeyException.class, () -> Context.renterGateway.save(renter));
+        renterGateway.save(renter);
+        Assertions.assertThrows(DuplicateKeyException.class, () -> renterGateway.save(renter));
     }
 
     @Test
     void test_findByEmail_noEmail_returnsNoResult() {
-        final Optional<Renter> renterOptional = Context.renterGateway.findByEmail("john.doe@email.com");
+        final Optional<Renter> renterOptional = renterGateway.findByEmail("john.doe@email.com");
         Assertions.assertFalse(renterOptional.isPresent());
     }
 
@@ -51,8 +47,8 @@ class RenterJdbcGatewayTest {
         renter.setFirstName("John");
         renter.setLastName("Doe");
         renter.setEmail("john.doe@email.com");
-        Context.renterGateway.save(renter);
-        final Optional<Renter> renterOptional = Context.renterGateway.findByEmail("john.doe@email.com");
+        renterGateway.save(renter);
+        final Optional<Renter> renterOptional = renterGateway.findByEmail("john.doe@email.com");
         Assertions.assertTrue(renterOptional.isPresent());
     }
 

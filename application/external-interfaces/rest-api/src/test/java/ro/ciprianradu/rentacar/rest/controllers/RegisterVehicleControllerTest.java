@@ -21,14 +21,16 @@ class RegisterVehicleControllerTest {
 
     @Test
     void test_registerVehicle_noVehicle_doesNotRegister() {
-        final RegisterVehicleController controller = new RegisterVehicleController(new MockRegisterVehicleInputPort());
+        final RegisterVehicleController controller = new RegisterVehicleController(
+            new MockRegisterVehicleInputPort());
         final ResponseEntity<?> responseEntity = controller.registerVehicle(null);
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
     }
 
     @Test
     void test_registerVehicle_noVehicleId_doesNotRegister() {
-        final RegisterVehicleController controller = new RegisterVehicleController(new MockRegisterVehicleInputPort());
+        final RegisterVehicleController controller = new RegisterVehicleController(
+            new MockRegisterVehicleInputPort());
         final Vehicle vehicle = new Vehicle();
         vehicle.setType("Economy Car");
         vehicle.setBrand("Opel");
@@ -40,7 +42,8 @@ class RegisterVehicleControllerTest {
 
     @Test
     void test_registerVehicle_whitespaceId_doesNotRegister() {
-        final RegisterVehicleController controller = new RegisterVehicleController(new MockRegisterVehicleInputPort());
+        final RegisterVehicleController controller = new RegisterVehicleController(
+            new MockRegisterVehicleInputPort());
         final Vehicle vehicle = new Vehicle();
         vehicle.setId("license plate");
         vehicle.setType("Economy Car");
@@ -53,7 +56,8 @@ class RegisterVehicleControllerTest {
 
     @Test
     void test_registerVehicle_noVehicleType_doesNotRegister() {
-        final RegisterVehicleController controller = new RegisterVehicleController(new MockRegisterVehicleInputPort());
+        final RegisterVehicleController controller = new RegisterVehicleController(
+            new MockRegisterVehicleInputPort());
         final Vehicle vehicle = new Vehicle();
         vehicle.setId("license-plate");
         vehicle.setBrand("Opel");
@@ -65,7 +69,8 @@ class RegisterVehicleControllerTest {
 
     @Test
     void test_registerVehicle_noVehicleBrand_doesNotRegister() {
-        final RegisterVehicleController controller = new RegisterVehicleController(new MockRegisterVehicleInputPort());
+        final RegisterVehicleController controller = new RegisterVehicleController(
+            new MockRegisterVehicleInputPort());
         final Vehicle vehicle = new Vehicle();
         vehicle.setId("license-plate");
         vehicle.setType("Economy Car");
@@ -77,7 +82,8 @@ class RegisterVehicleControllerTest {
 
     @Test
     void test_registerVehicle_noVehicleModel_doesNotRegister() {
-        final RegisterVehicleController controller = new RegisterVehicleController(new MockRegisterVehicleInputPort());
+        final RegisterVehicleController controller = new RegisterVehicleController(
+            new MockRegisterVehicleInputPort());
         final Vehicle vehicle = new Vehicle();
         vehicle.setId("license-plate");
         vehicle.setType("Economy Car");
@@ -89,7 +95,8 @@ class RegisterVehicleControllerTest {
 
     @Test
     void test_registerVehicle_noVehicleRate_doesNotRegister() {
-        final RegisterVehicleController controller = new RegisterVehicleController(new MockRegisterVehicleInputPort());
+        final RegisterVehicleController controller = new RegisterVehicleController(
+            new MockRegisterVehicleInputPort());
         final Vehicle vehicle = new Vehicle();
         vehicle.setId("license-plate");
         vehicle.setType("Economy Car");
@@ -101,7 +108,8 @@ class RegisterVehicleControllerTest {
 
     @Test
     void test_registerVehicle_validVehicle_registers() {
-        final RegisterVehicleController controller = new RegisterVehicleController(new MockRegisterVehicleInputPort());
+        final RegisterVehicleController controller = new RegisterVehicleController(
+            new MockRegisterVehicleInputPort());
         final Vehicle vehicle = new Vehicle();
         vehicle.setId("license-plate");
         vehicle.setType("Economy Car");
@@ -110,12 +118,15 @@ class RegisterVehicleControllerTest {
         vehicle.setRate(BigDecimal.TEN);
         vehicle.setLocation("SBZ");
         final ResponseEntity<?> responseEntity = controller.registerVehicle(vehicle);
-        Assertions.assertEquals(ResponseEntity.created(URI.create(RegisterVehicleController.ENDPOINT + "/" + vehicle.getId())).body(vehicle), responseEntity);
+        Assertions.assertEquals(ResponseEntity
+            .created(URI.create(RegisterVehicleController.ENDPOINT + "/" + vehicle.getId()))
+            .body(vehicle), responseEntity);
     }
 
     @Test
     void test_registerVehicle_duplicateRenter_doesNotRegister() {
-        final RegisterVehicleController controller = new RegisterVehicleController(new MockRegisterVehicleInputPort());
+        final RegisterVehicleController controller = new RegisterVehicleController(
+            new MockRegisterVehicleInputPort());
         final Vehicle vehicle = new Vehicle();
         vehicle.setId("license-plate");
         vehicle.setType("Economy Car");
@@ -133,7 +144,8 @@ class RegisterVehicleControllerTest {
         private List<String> registeredRenters = new ArrayList<>();
 
         @Override
-        public void registerVehicle(final RegisterVehicleInputData inputData, final RegisterVehicleOutputPort outputPort) {
+        public void registerVehicle(final RegisterVehicleInputData inputData,
+            final RegisterVehicleOutputPort outputPort) {
             boolean registered;
             if (registeredRenters.contains(inputData.getId())) {
                 registered = false;
